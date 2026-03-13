@@ -3,166 +3,194 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Your Name · Personal Website</title>
-    <meta
-      name="description"
-      content="Personal website for Your Name – projects, publications, experience, and contact."
-    />
+    <title>Octavio Villalobos</title>
+    <meta name="description" content="Personal website for Octavio Villalobos." />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a href="#top" class="logo">Your Name</a>
-        <nav class="nav">
-          <button class="nav-toggle" aria-label="Toggle navigation">
-            <span></span><span></span>
-          </button>
-          <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#publications">Publications</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <div class="gba-body">
 
-    <main id="top">
-      <section class="hero">
-        <div class="container hero-inner">
-          <div>
-            <p class="eyebrow">Hello, I'm</p>
-            <h1>Your Name</h1>
-            <p class="hero-tagline">
-              A short 1–2 sentence summary about who you are and what you do.
-            </p>
-            <div class="hero-actions">
-              <a href="#projects" class="btn primary">View projects</a>
-              <a href="#contact" class="btn ghost">Get in touch</a>
+      <!-- ── Top strip ── -->
+      <div class="gba-top-strip">
+        <span class="gba-brand">Portfolio</span>
+        <span class="gba-power-led"></span>
+      </div>
+
+      <!-- ── Middle: D-pad | screen | A/B ── -->
+      <div class="gba-mid">
+
+        <!-- Left: D-pad -->
+        <div class="gba-left">
+          <div class="gba-dpad">
+            <button class="dp dp-up"    type="button" data-action="prev" aria-label="Previous section">^</button>
+            <button class="dp dp-left"  type="button" data-action="prev" aria-label="Previous section">&lt;</button>
+            <div    class="dp dp-mid"></div>
+            <button class="dp dp-right" type="button" data-action="next" aria-label="Next section">&gt;</button>
+            <button class="dp dp-down"  type="button" data-action="next" aria-label="Next section">v</button>
+          </div>
+          <div class="gba-left-buttons">
+            <div class="left-buttons-row">
+              <button class="small-btn" type="button" data-scene-target="publications" aria-label="Publications"></button>
+              <span class="small-label">SELECT</span>
             </div>
-            <div class="hero-links">
-              <a href="https://github.com/your-username" target="_blank" rel="noreferrer">GitHub</a>
-              <a href="https://linkedin.com/in/your-username" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href="Your-Resume.pdf" target="_blank" rel="noreferrer">Résumé</a>
+            <div class="left-buttons-row">
+              <button class="small-btn" type="button" data-scene-target="experience" aria-label="Experience"></button>
+              <span class="small-label">START</span>
             </div>
           </div>
         </div>
-      </section>
 
-      <section id="about" class="section">
-        <div class="container">
-          <h2>About</h2>
-          <p>
-            Write a short bio here: what you’re studying or working on, your main interests,
-            and what kind of opportunities you’re looking for.
-          </p>
-          <div class="chips">
-            <span class="chip">Skill / Tech 1</span>
-            <span class="chip">Skill / Tech 2</span>
-            <span class="chip">Skill / Tech 3</span>
+        <!-- Centre: screen bezel -->
+        <div class="gba-bezel">
+          <div class="gba-screen">
+            <div class="gba-screen-inner">
+
+              <!-- About / Home – Pokémon theme -->
+              <section class="scene scene-active theme-pokemon" data-scene="about">
+                <div class="scene-inner">
+                  <p class="eyebrow">Hello, I'm</p>
+                  <h1>Octavio Villalobos</h1>
+                  <p class="hero-tagline">
+                    I am currently a Master's student at the University of California, Santa Cruz, studying Computer Sceince. 
+                  </p>
+                  <div class="chips">
+                    <span class="chip">Skill / Tech 1</span>
+                    <span class="chip">Skill / Tech 2</span>
+                    <span class="chip">Skill / Tech 3</span>
+                  </div>
+                  <div class="hero-links">
+                    <a href="https://github.com/your-username" target="_blank" rel="noreferrer">GitHub</a>
+                    <a href="https://linkedin.com/in/your-username" target="_blank" rel="noreferrer">LinkedIn</a>
+                    <a href="Your-Resume.pdf" target="_blank" rel="noreferrer">Résumé</a>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Projects – Mario Kart theme -->
+              <section class="scene theme-mariokart" data-scene="projects">
+                <div class="scene-inner">
+                  <h2>Projects</h2>
+                  <div class="grid">
+                    <article class="card">
+                      <h3>Project One</h3>
+                      <p>Brief description of what this project does, the tech stack, and why it's interesting.</p>
+                      <p class="meta">Tech: HTML, CSS, JavaScript</p>
+                      <div class="card-links">
+                        <a href="https://github.com/your-username/project-one" target="_blank" rel="noreferrer">Code</a>
+                        <a href="https://your-username.github.io/project-one" target="_blank" rel="noreferrer">Live demo</a>
+                      </div>
+                    </article>
+                    <article class="card">
+                      <h3>Project Two</h3>
+                      <p>Another project description. Focus on what problem it solves and what you learned.</p>
+                      <p class="meta">Tech: React, TypeScript</p>
+                      <div class="card-links">
+                        <a href="#" target="_blank" rel="noreferrer">Code</a>
+                        <a href="#" target="_blank" rel="noreferrer">Live demo</a>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Publications – Metroid theme -->
+              <section class="scene theme-metroid" data-scene="publications">
+                <div class="scene-inner">
+                  <h2>Publications</h2>
+                  <ul class="list">
+                    <li>
+                      <strong>Large Language Models are Autonomous Cyber Defenders</strong><br />
+                      <span class="meta">IEEE CAI/ 2025 IEEE Conference on Artificial Intelligence (CAI) - Pages: 1125-1132 · Year: 2025</span><br />
+                      <a href="https://arxiv.org/pdf/2505.04843" target="_blank" rel="noreferrer">PDF</a>
+                      <span aria-hidden="true"> or </span>
+                      <a href="https://arxiv.org/abs/2505.04843" target="_blank" rel="noreferrer">DOI/Link</a>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+
+              <!-- Experience – Zelda theme -->
+              <section class="scene theme-zelda" data-scene="experience">
+                <div class="scene-inner">
+                  <h2>Experience</h2>
+                  <div class="timeline">
+                    <article class="timeline-item">
+                      <h3>Role · Company</h3>
+                      <p class="meta">Start – End · Location</p>
+                      <ul>
+                        <li>Key achievement or responsibility one.</li>
+                        <li>Key achievement or responsibility two.</li>
+                      </ul>
+                    </article>
+                    <article class="timeline-item">
+                      <h3>Education · University</h3>
+                      <p class="meta">Degree · Years</p>
+                      <ul>
+                        <li>Relevant coursework or highlight.</li>
+                      </ul>
+                    </article>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Contact – Kirby theme -->
+              <section class="scene theme-kirby" data-scene="contact">
+                <div class="scene-inner scene-inner-contact">
+                  <h2>Contact</h2>
+                  <div class="contact-icons">
+                    <a href="mailto:ocvillal@ucsc.edu"
+                       class="contact-icon contact-mail"
+                       aria-label="Email">
+                      <span class="contact-icon-label">Email</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/octavio-villalobos/"
+                       target="_blank"
+                       rel="noreferrer"
+                       class="contact-icon contact-linkedin"
+                       aria-label="LinkedIn profile">
+                      <span class="contact-icon-label">LinkedIn</span>
+                    </a>
+                  </div>
+                </div>
+              </section>
+
+            </div><!-- /.gba-screen-inner -->
+          </div><!-- /.gba-screen -->
+        </div><!-- /.gba-bezel -->
+
+        <!-- Right: A/B buttons -->
+        <div class="gba-right">
+          <div class="gba-ab">
+            <button class="ab-btn btn-b" type="button" data-scenes-target="projects" data-scene-target="projects" aria-label="Projects">B</button>
+            <button class="ab-btn btn-a" type="button" data-scenes-target="about" data-scene-target="about" aria-label="About">A</button>
+          </div>
+          <div class="gba-vents">
+            <span></span><span></span><span></span><span></span>
           </div>
         </div>
-      </section>
 
-      <section id="projects" class="section section-alt">
-        <div class="container">
-          <h2>Projects</h2>
-          <div class="grid">
-            <article class="card">
-              <h3>Project One</h3>
-              <p>
-                Brief description of what this project does, the tech stack, and why it’s interesting.
-              </p>
-              <p class="meta">Tech: HTML, CSS, JavaScript</p>
-              <div class="card-links">
-                <a href="https://github.com/your-username/project-one" target="_blank" rel="noreferrer">Code</a>
-                <a href="https://your-username.github.io/project-one" target="_blank" rel="noreferrer">Live demo</a>
-              </div>
-            </article>
+      </div><!-- /.gba-mid -->
 
-            <article class="card">
-              <h3>Project Two</h3>
-              <p>
-                Another project description. Focus on what problem it solves and what you learned.
-              </p>
-              <p class="meta">Tech: React, TypeScript</p>
-              <div class="card-links">
-                <a href="#" target="_blank" rel="noreferrer">Code</a>
-                <a href="#" target="_blank" rel="noreferrer">Live demo</a>
-              </div>
-            </article>
+      <!-- ── Bottom strip: label | START/SELECT | speaker ── -->
+      <div class="gba-bottom">
+        <div class="gba-bottom-left">
+          <div class="gba-speaker">
+            <span></span><span></span><span></span><span></span><span></span>
           </div>
         </div>
-      </section>
-
-      <section id="publications" class="section">
-        <div class="container">
-          <h2>Publications</h2>
-          <ul class="list">
-            <li>
-              <strong>Paper Title Here</strong><br />
-              <span class="meta">Conference / Journal · Year</span><br />
-              <a href="#" target="_blank" rel="noreferrer">PDF</a>
-              <span aria-hidden="true">·</span>
-              <a href="#" target="_blank" rel="noreferrer">DOI / Link</a>
-            </li>
-            <li>
-              <strong>Another Publication</strong><br />
-              <span class="meta">Venue · Year</span><br />
-              <a href="#" target="_blank" rel="noreferrer">PDF</a>
-            </li>
-          </ul>
+        <div class="gba-bottom-center">
+          <span class="gba-model">Octavio Villalobos</span>
         </div>
-      </section>
-
-      <section id="experience" class="section section-alt">
-        <div class="container">
-          <h2>Experience</h2>
-          <div class="timeline">
-            <article class="timeline-item">
-              <h3>Role · Company</h3>
-              <p class="meta">Start – End · Location</p>
-              <ul>
-                <li>Key achievement or responsibility one.</li>
-                <li>Key achievement or responsibility two.</li>
-              </ul>
-            </article>
-            <article class="timeline-item">
-              <h3>Education · University</h3>
-              <p class="meta">Degree · Years</p>
-              <ul>
-                <li>Relevant coursework or highlight.</li>
-              </ul>
-            </article>
+        <div class="gba-bottom-right">
+          <div class="gba-speaker">
+            <span></span><span></span><span></span><span></span><span></span>
           </div>
         </div>
-      </section>
+      </div><!-- /.gba-bottom -->
 
-      <section id="contact" class="section">
-        <div class="container">
-          <h2>Contact</h2>
-          <p>
-            The easiest way to reach me is by email:
-            <a href="mailto:you@example.com">you@example.com</a>
-          </p>
-          <p class="meta">
-            You can also connect with me on
-            <a href="https://linkedin.com/in/your-username" target="_blank" rel="noreferrer">LinkedIn</a>.
-          </p>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <span>© <span id="year"></span> Your Name</span>
-        <button id="theme-toggle" class="btn ghost small" type="button">Toggle theme</button>
-      </div>
-    </footer>
+    </div><!-- /.gba-body -->
 
     <script src="script.js"></script>
   </body>
 </html>
-
