@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Name · Personal Website</title>
+    <meta
+      name="description"
+      content="Personal website for Your Name – projects, publications, experience, and contact."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#top" class="logo">Your Name</a>
+        <nav class="nav">
+          <button class="nav-toggle" aria-label="Toggle navigation">
+            <span></span><span></span>
+          </button>
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <p class="eyebrow">Hello, I'm</p>
+            <h1>Your Name</h1>
+            <p class="hero-tagline">
+              A short 1–2 sentence summary about who you are and what you do.
+            </p>
+            <div class="hero-actions">
+              <a href="#projects" class="btn primary">View projects</a>
+              <a href="#contact" class="btn ghost">Get in touch</a>
+            </div>
+            <div class="hero-links">
+              <a href="https://github.com/your-username" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="https://linkedin.com/in/your-username" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="Your-Resume.pdf" target="_blank" rel="noreferrer">Résumé</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <h2>About</h2>
+          <p>
+            Write a short bio here: what you’re studying or working on, your main interests,
+            and what kind of opportunities you’re looking for.
+          </p>
+          <div class="chips">
+            <span class="chip">Skill / Tech 1</span>
+            <span class="chip">Skill / Tech 2</span>
+            <span class="chip">Skill / Tech 3</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section section-alt">
+        <div class="container">
+          <h2>Projects</h2>
+          <div class="grid">
+            <article class="card">
+              <h3>Project One</h3>
+              <p>
+                Brief description of what this project does, the tech stack, and why it’s interesting.
+              </p>
+              <p class="meta">Tech: HTML, CSS, JavaScript</p>
+              <div class="card-links">
+                <a href="https://github.com/your-username/project-one" target="_blank" rel="noreferrer">Code</a>
+                <a href="https://your-username.github.io/project-one" target="_blank" rel="noreferrer">Live demo</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <h3>Project Two</h3>
+              <p>
+                Another project description. Focus on what problem it solves and what you learned.
+              </p>
+              <p class="meta">Tech: React, TypeScript</p>
+              <div class="card-links">
+                <a href="#" target="_blank" rel="noreferrer">Code</a>
+                <a href="#" target="_blank" rel="noreferrer">Live demo</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="publications" class="section">
+        <div class="container">
+          <h2>Publications</h2>
+          <ul class="list">
+            <li>
+              <strong>Paper Title Here</strong><br />
+              <span class="meta">Conference / Journal · Year</span><br />
+              <a href="#" target="_blank" rel="noreferrer">PDF</a>
+              <span aria-hidden="true">·</span>
+              <a href="#" target="_blank" rel="noreferrer">DOI / Link</a>
+            </li>
+            <li>
+              <strong>Another Publication</strong><br />
+              <span class="meta">Venue · Year</span><br />
+              <a href="#" target="_blank" rel="noreferrer">PDF</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="experience" class="section section-alt">
+        <div class="container">
+          <h2>Experience</h2>
+          <div class="timeline">
+            <article class="timeline-item">
+              <h3>Role · Company</h3>
+              <p class="meta">Start – End · Location</p>
+              <ul>
+                <li>Key achievement or responsibility one.</li>
+                <li>Key achievement or responsibility two.</li>
+              </ul>
+            </article>
+            <article class="timeline-item">
+              <h3>Education · University</h3>
+              <p class="meta">Degree · Years</p>
+              <ul>
+                <li>Relevant coursework or highlight.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <h2>Contact</h2>
+          <p>
+            The easiest way to reach me is by email:
+            <a href="mailto:you@example.com">you@example.com</a>
+          </p>
+          <p class="meta">
+            You can also connect with me on
+            <a href="https://linkedin.com/in/your-username" target="_blank" rel="noreferrer">LinkedIn</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> Your Name</span>
+        <button id="theme-toggle" class="btn ghost small" type="button">Toggle theme</button>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
