@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const preloader = document.querySelector(".preloader");
+
   const yearSpan = document.getElementById("year");
   if (yearSpan) {
     yearSpan.textContent = String(new Date().getFullYear());
@@ -55,5 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  window.addEventListener("load", () => {
+    if (preloader) {
+      preloader.classList.add("preloader-hidden");
+    }
+  });
 });
 
