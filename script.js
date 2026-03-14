@@ -38,6 +38,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Menu button toggle (mobile/breakpoint)
+  document.querySelectorAll(".pkmn-menu-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const bar = btn.closest(".pkmn-blue-bar");
+      if (bar) {
+        bar.classList.toggle("is-menu-open");
+        btn.setAttribute("aria-expanded", bar.classList.contains("is-menu-open"));
+      }
+    });
+  });
+
   // Scroll wheel: switch sections (high threshold so it's not too sensitive)
   let scrollAccum = 0;
   const scrollThreshold = 400;
