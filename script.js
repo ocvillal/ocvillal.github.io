@@ -37,4 +37,19 @@ document.addEventListener("DOMContentLoaded", () => {
       showScene((currentIndex - 1 + scenes.length) % scenes.length);
     }
   });
+
+  // Scroll wheel: switch sections (high threshold so it's not too sensitive)
+  let scrollAccum = 0;
+  const scrollThreshold = 400;
+  document.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    scrollAccum += e.deltaY;
+    if (scrollAccum >= scrollThreshold) {
+      scrollAccum = 0;
+      showScene((currentIndex + 1) % scenes.length);
+    } else if (scrollAccum <= -scrollThreshold) {
+      scrollAccum = 0;
+      showScene((currentIndex - 1 + scenes.length) % scenes.length);
+    }
+  }, { passive: false });
 });
