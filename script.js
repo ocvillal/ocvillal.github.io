@@ -3,10 +3,18 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   const showScene = (index) => {
+    if (index < 0 || index >= scenes.length) index = 0;
+    currentIndex = index;
     scenes.forEach((scene, i) => {
       scene.classList.toggle("scene-active", i === index);
     });
-    currentIndex = index;
+  };
+
+  const ensureSceneVisible = () => {
+    requestAnimationFrame(() => {
+      const active = document.querySelector(".scene.scene-active");
+      if (!active) showScene(0);
+    });
   };
 
   document.querySelectorAll("[data-scene-target]").forEach((btn) => {
@@ -47,6 +55,14 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.setAttribute("aria-expanded", bar.classList.contains("is-menu-open"));
       }
     });
+  });
+
+  // Fix blank screen when returning from external link or tab switch (mobile bfcache)
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) ensureSceneVisible();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") ensureSceneVisible();
   });
 
   // Scroll wheel: switch sections (high threshold so it's not too sensitive)
