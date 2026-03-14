@@ -22,6 +22,8 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
+  min-height: 100%;
+  min-height: -webkit-fill-available;
   overflow: hidden;
   font-family: var(--font-sans);
   background: var(--gba-purple);
@@ -99,6 +101,15 @@ strong { color: var(--fg); }
 /* Stack layout when viewport is narrow – green on top, beige (bio) directly underneath */
 @media (max-width: 900px) {
   .gba-mid {
+    min-height: 50vh;
+  }
+  .gba-screen {
+    min-height: 40vh;
+  }
+  .gba-screen-inner {
+    min-height: 35vh;
+  }
+  .gba-mid {
     grid-template-columns: 0 1fr 0;
   }
   .gba-left,
@@ -160,6 +171,40 @@ strong { color: var(--fg); }
     flex-wrap: nowrap;
     gap: .4rem;
     align-items: center;
+  }
+  /* Projects: stack info above grid when purple sides go away (same as home) */
+  .theme-mariokart .projects-layout {
+    flex-direction: column;
+  }
+  .theme-mariokart .projects-info-panel {
+    flex: 0 0 auto;
+    max-height: 40%;
+  }
+  .theme-mariokart .projects-grid-wrap,
+  .theme-mariokart .projects-grid {
+    min-height: 0;
+  }
+  .theme-mariokart .projects-grid {
+    gap: 1rem;
+    padding: .75rem;
+    max-width: 500px;
+    max-height: 500px;
+  }
+}
+
+/* Portrait-specific fixes for iOS Safari viewport / flex collapse */
+@media (max-width: 900px) and (orientation: portrait) {
+  html {
+    height: 100%;
+    min-height: -webkit-fill-available;
+  }
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  .gba-mid {
+    flex: 1 1 auto;
+    min-height: 55vh;
   }
 }
 
@@ -548,15 +593,274 @@ strong { color: var(--fg); }
   transform: translateY(2px);
 }
 
-/* Mario Kart – dark track with red/blue edge lights */
+/* ============================================================
+   Mario Kart – Choose a Character screen theme
+   ============================================================ */
+
+/* Sky + cloud background */
 .theme-mariokart .scene-inner {
   background:
-    linear-gradient(to bottom, #020617 0, #020617 30%, #111827 55%, #020617 100%);
+    radial-gradient(ellipse at 15% 25%, rgba(255,255,255,0.85) 0%, transparent 18%),
+    radial-gradient(ellipse at 40% 15%, rgba(255,255,255,0.7) 0%, transparent 12%),
+    radial-gradient(ellipse at 70% 35%, rgba(255,255,255,0.6) 0%, transparent 10%),
+    radial-gradient(ellipse at 88% 20%, rgba(255,255,255,0.55) 0%, transparent 9%),
+    radial-gradient(ellipse at 55% 60%, rgba(255,255,255,0.4) 0%, transparent 14%),
+    linear-gradient(180deg, #93c5fd 0%, #bfdbfe 40%, #dbeafe 100%);
   border-radius: 10px;
-  border: 2px solid rgba(239,68,68,0.5);
-  box-shadow: 0 0 0 1px rgba(59,130,246,0.4);
+  border: 3px solid #1d4ed8;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
 }
-.theme-mariokart h2 { color: #f97316; }
+
+/* Projects full-screen layout */
+.scene-inner-projects {
+  display: flex;
+  flex-direction: column;
+  padding: .4rem .5rem .35rem;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* "CHOOSE A PROJECT" title – gold with blue outline */
+.projects-title {
+  text-align: center;
+  font-size: .9rem;
+  color: #facc15 !important;
+  text-shadow:
+    2px  2px 0 #1d4ed8,
+   -2px  2px 0 #1d4ed8,
+    2px -2px 0 #1d4ed8,
+   -2px -2px 0 #1d4ed8,
+    1px  0   0 #1d4ed8,
+   -1px  0   0 #1d4ed8;
+  margin-bottom: .35rem;
+  letter-spacing: .1em;
+  flex-shrink: 0;
+}
+
+/* Two-column layout: left panel + right grid */
+.projects-layout {
+  display: flex;
+  gap: .5rem;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+/* ── LEFT PANEL – Bio box (screenshot style) ── */
+.projects-info-panel {
+  flex: 0 0 35%;
+  display: flex;
+  flex-direction: column;
+  padding: .3rem .4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.project-bio-box {
+  background: #fef9c3;
+  border: 3px solid #1d4ed8;
+  border-radius: 6px;
+  padding: .5rem .55rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: inset 0 0 0 1px rgba(253,224,71,0.5);
+}
+
+/* Main title – gold with blue outline (matches projects title) */
+.project-bio-title {
+  font-size: .72rem;
+  color: #facc15 !important;
+  text-shadow:
+    1px  1px 0 #1d4ed8,
+   -1px  1px 0 #1d4ed8,
+    1px -1px 0 #1d4ed8,
+   -1px -1px 0 #1d4ed8,
+    1px  0   0 #1d4ed8,
+   -1px  0   0 #1d4ed8;
+  margin: 0 0 .1rem;
+  font-weight: 700;
+}
+
+/* Subtitle – blue to match theme */
+.project-bio-subtitle {
+  font-size: .48rem;
+  color: #1d4ed8;
+  margin: 0;
+}
+
+/* Description paragraph */
+.project-bio-desc {
+  font-size: .46rem;
+  color: #1e293b;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Bulleted tech list */
+.project-bio-tech {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: .46rem;
+  color: #000;
+  line-height: 1.5;
+}
+.project-bio-tech li { margin-bottom: .1rem; }
+
+/* Visit button – blue/yellow theme */
+.project-bio-links {
+  display: flex;
+  gap: .3rem;
+  margin-top: .1rem;
+}
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  padding: .25rem .5rem;
+  font-size: .46rem;
+  background: #fef9c3;
+  color: #1d4ed8;
+  border: 2px solid #1d4ed8;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: inherit;
+}
+.project-link:hover { background: #fde047; text-decoration: none; }
+
+/* ── RIGHT GRID (circle overlay + portrait boxes) ── */
+.projects-grid-wrap {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-grid {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 600px;
+  max-height: 600px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(80px, 1fr));
+  grid-template-rows: repeat(3, minmax(80px, 1fr));
+  gap: 1.25rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  align-content: center;
+}
+
+/* Each portrait box – light sky blue, Mario Kart–style spacing */
+.project-box {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  min-height: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #dbeafe 0%, #bfdbfe 100%);
+  border: 3px solid #3b82f6;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: .2rem;
+  font-family: inherit;
+  color: #1e293b;
+  transition: filter .12s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 3px rgba(0,0,0,0.2);
+}
+.project-box:hover { filter: brightness(1.08); }
+
+/* All boxes same blue border to match sky theme */
+.project-box:nth-child(1), .project-box:nth-child(2), .project-box:nth-child(3),
+.project-box:nth-child(4), .project-box:nth-child(5), .project-box:nth-child(6),
+.project-box:nth-child(7), .project-box:nth-child(8), .project-box:nth-child(9) {
+  border-color: #3b82f6;
+}
+
+/* Selected: pink L-shaped corners with dark pink outline (Mario Kart style) */
+.project-box-selected {
+  border: 3px solid #3b82f6 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6) !important;
+  overflow: visible;
+  position: relative;
+  padding: 10px;
+  margin: -10px;
+  background-image:
+    /* Dark pink outline around each L – thicker, sits behind pink */
+    linear-gradient(90deg, #9f1239 10px, transparent 10px),
+    linear-gradient(180deg, #9f1239 10px, transparent 10px),
+    linear-gradient(270deg, #9f1239 10px, transparent 10px),
+    linear-gradient(180deg, #9f1239 10px, transparent 10px),
+    linear-gradient(90deg, #9f1239 10px, transparent 10px),
+    linear-gradient(0deg, #9f1239 10px, transparent 10px),
+    linear-gradient(270deg, #9f1239 10px, transparent 10px),
+    linear-gradient(0deg, #9f1239 10px, transparent 10px),
+    /* Pink L-shaped corners */
+    linear-gradient(90deg, #f472b6 8px, transparent 8px),
+    linear-gradient(180deg, #f472b6 8px, transparent 8px),
+    linear-gradient(270deg, #f472b6 8px, transparent 8px),
+    linear-gradient(180deg, #f472b6 8px, transparent 8px),
+    linear-gradient(90deg, #f472b6 8px, transparent 8px),
+    linear-gradient(0deg, #f472b6 8px, transparent 8px),
+    linear-gradient(270deg, #f472b6 8px, transparent 8px),
+    linear-gradient(0deg, #f472b6 8px, transparent 8px),
+    /* base fill */
+    linear-gradient(145deg, #f0c0e0 0%, #ddb8dd 100%);
+  background-size:
+    34px 34px, 34px 34px,
+    34px 34px, 34px 34px,
+    34px 34px, 34px 34px,
+    34px 34px, 34px 34px,
+    32px 32px, 32px 32px,
+    32px 32px, 32px 32px,
+    32px 32px, 32px 32px,
+    32px 32px, 32px 32px,
+    100% 100%;
+  background-position:
+    0 0, 0 0,
+    100% 0, 100% 0,
+    0 100%, 0 100%,
+    100% 100%, 100% 100%,
+    0 0, 0 0,
+    100% 0, 100% 0,
+    0 100%, 0 100%,
+    100% 100%, 100% 100%,
+    0 0;
+  background-repeat: no-repeat;
+}
+
+/* Number label in bottom-left corner */
+.project-box-label {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  z-index: 1;
+  font-size: .5rem;
+  background: #dc2626;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 2px solid rgba(0,0,0,0.4);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.project-box-icon {
+  font-size: .85rem;
+}
 
 /* Metroid – deep space teal/orange */
 .theme-metroid .scene-inner {

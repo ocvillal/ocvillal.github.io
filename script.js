@@ -46,6 +46,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Project selection (Mario Kart character-select style)
+  const updateProjectPanel = (box) => {
+    if (!box) return;
+    const name = document.getElementById("project-selected-name");
+    const subtitle = document.getElementById("project-subtitle");
+    const desc = document.getElementById("project-selected-desc");
+    const techList = document.getElementById("project-tech-list");
+    const linksWrap = document.getElementById("project-selected-links");
+    if (name) name.textContent = box.dataset.name || "";
+    if (subtitle) subtitle.textContent = box.dataset.subtitle || "";
+    if (desc) desc.textContent = box.dataset.desc || "";
+    const tech = box.dataset.tech || "";
+    if (techList) {
+      techList.innerHTML = tech.split("|").filter(Boolean).map(t => `<li>${t.trim()}</li>`).join("") || "<li>—</li>";
+    }
+    const code = box.dataset.code;
+    const demo = box.dataset.demo;
+    let html = "";
+    if (demo && demo !== "#") html += `<a href="${demo}" target="_blank" rel="noreferrer" class="project-link">Visit</a>`;
+    else if (code && code !== "#") html += `<a href="${code}" target="_blank" rel="noreferrer" class="project-link">Code</a>`;
+    if (linksWrap) linksWrap.innerHTML = html || "";
+  };
+  document.querySelectorAll(".project-box").forEach((box) => {
+    box.addEventListener("click", () => {
+      document.querySelectorAll(".project-box").forEach((b) => b.classList.remove("project-box-selected"));
+      box.classList.add("project-box-selected");
+      updateProjectPanel(box);
+    });
+  });
+  const initialProject = document.querySelector(".project-box-selected");
+  if (initialProject) updateProjectPanel(initialProject);
+
   // Menu button toggle (mobile/breakpoint)
   document.querySelectorAll(".pkmn-menu-btn").forEach((btn) => {
     btn.addEventListener("click", () => {

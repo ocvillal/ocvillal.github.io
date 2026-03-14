@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Octavio Villalobos</title>
     <meta name="description" content="Personal website for Octavio Villalobos." />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
@@ -87,29 +87,120 @@
                 </div>
               </section>
 
-              <!-- Projects – Mario Kart theme -->
+              <!-- Projects – Mario Kart character-select style -->
               <section class="scene theme-mariokart" data-scene="projects">
-                <div class="scene-inner">
-                  <h2>Projects</h2>
-                  <div class="grid">
-                    <article class="card">
-                      <h3>Project One</h3>
-                      <p>Brief description of what this project does, the tech stack, and why it's interesting.</p>
-                      <p class="meta">Tech: HTML, CSS, JavaScript</p>
-                      <div class="card-links">
-                        <a href="https://github.com/your-username/project-one" target="_blank" rel="noreferrer">Code</a>
-                        <a href="https://your-username.github.io/project-one" target="_blank" rel="noreferrer">Live demo</a>
+                <div class="scene-inner scene-inner-projects">
+                  <h2 class="projects-title">Choose a Project</h2>
+                  <div class="projects-layout">
+                    <div class="projects-info-panel">
+                      <div class="project-bio-box">
+                        <h3 class="project-bio-title" id="project-selected-name">Project One</h3>
+                        <div class="project-bio-subtitle" id="project-subtitle">Visual Blockchain Explorer for Cardano</div>
+                        <p class="project-bio-desc" id="project-selected-desc">Brief description of what this project does and why it's interesting.</p>
+                        <ul class="project-bio-tech" id="project-tech-list">
+                          <li>HTML</li>
+                          <li>CSS</li>
+                          <li>JavaScript</li>
+                        </ul>
+                        <div class="project-bio-links" id="project-selected-links">
+                          <a href="#" target="_blank" rel="noreferrer" class="project-link">Visit</a>
+                        </div>
                       </div>
-                    </article>
-                    <article class="card">
-                      <h3>Project Two</h3>
-                      <p>Another project description. Focus on what problem it solves and what you learned.</p>
-                      <p class="meta">Tech: React, TypeScript</p>
-                      <div class="card-links">
-                        <a href="#" target="_blank" rel="noreferrer">Code</a>
-                        <a href="#" target="_blank" rel="noreferrer">Live demo</a>
-                      </div>
-                    </article>
+                    </div>
+                    <div class="projects-grid-wrap">
+                    <div class="projects-grid">
+                      <button type="button" class="project-box project-box-selected" data-project="0"
+                        data-name="eUTx0.org"
+                        data-subtitle="Visual Blockchain Explorer for Cardano"
+                        data-desc="I have a general interest in crypto and blockchain technologies and this is one of my most complex side projects. It's a visual tool for Cardano cryptocurrency to help you understand the UTXO model and the content of Cardano blocks."
+                        data-tech="Serverless Node.js|Google Firestore DB|BlockFrost API|PhaserJS|Tailwind CSS"
+                        data-code="#"
+                        data-demo="https://eutx0.org">
+                        <span class="project-box-label">1</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="1"
+                        data-name="Project Two"
+                        data-subtitle="SPA with React and TypeScript"
+                        data-desc="Another project description. Focus on what problem it solves and what you learned."
+                        data-tech="React|TypeScript|State Management"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">2</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="2"
+                        data-name="Project Three"
+                        data-subtitle="Deep Learning Research"
+                        data-desc="AI/ML or research project. Tools used and outcomes."
+                        data-tech="Python|PyTorch|Reinforcement Learning"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">3</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="3"
+                        data-name="Project Four"
+                        data-subtitle="Placeholder"
+                        data-desc="Fourth project placeholder. Replace with your details."
+                        data-tech="Various"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">4</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="4"
+                        data-name="Project Five"
+                        data-subtitle="Placeholder"
+                        data-desc="Fifth project placeholder."
+                        data-tech="Various"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">5</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="5"
+                        data-name="Project Six"
+                        data-subtitle="Placeholder"
+                        data-desc="Sixth project placeholder."
+                        data-tech="Various"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">6</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="6"
+                        data-name="Project Seven"
+                        data-subtitle="Placeholder"
+                        data-desc="Seventh project placeholder."
+                        data-tech="Various"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">7</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="7"
+                        data-name="Project Eight"
+                        data-subtitle="Placeholder"
+                        data-desc="Eighth project placeholder."
+                        data-tech="Various"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">8</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                      <button type="button" class="project-box" data-project="8"
+                        data-name="Project Nine"
+                        data-subtitle="Placeholder"
+                        data-desc="Ninth project placeholder."
+                        data-tech="Various"
+                        data-code="#"
+                        data-demo="#">
+                        <span class="project-box-label">9</span>
+                        <span class="project-box-icon">●</span>
+                      </button>
+                    </div>
+                    </div>
                   </div>
                 </div>
               </section>
