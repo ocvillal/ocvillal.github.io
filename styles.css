@@ -96,7 +96,8 @@ strong { color: var(--fg); }
   background: var(--gba-purple);
 }
 
-@media (max-width: 640px) {
+/* Stack layout when viewport is narrow – green on top, beige (bio) directly underneath */
+@media (max-width: 1400px) {
   .gba-mid {
     grid-template-columns: 0 1fr 0;
   }
@@ -104,28 +105,59 @@ strong { color: var(--fg); }
   .gba-right {
     display: none;
   }
-
+  /* Force vertical stack: green box + picture on top, beige bio box directly below (where brown area is) */
   .theme-pokemon .about-panel {
-    flex-direction: column;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
   }
   .theme-pokemon .about-left.pkmn-items-panel {
-    flex: 0 0 auto;
-    min-width: unset;
-    width: 100%;
-  }
-  .theme-pokemon .pkmn-photo-wrap .about-photo {
-    max-width: 180px !important;
+    flex: 0 0 auto !important;
+    order: 1 !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .theme-pokemon .about-right.pkmn-bio-panel {
-    flex: 1;
+    flex: 1 1 auto !important;
+    order: 2 !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 768px) {
+  .theme-pokemon .pkmn-photo-wrap .about-photo {
+    max-width: 160px !important;
+  }
+  /* Blue bar: page buttons on top row, Résumé/GitHub/LinkedIn underneath */
+  .theme-pokemon .about-bottom.pkmn-blue-bar {
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .theme-pokemon .pkmn-blue-bar .pkmn-bar-buttons {
+    flex-wrap: wrap;
+  }
+  .theme-pokemon .pkmn-blue-bar .about-buttons {
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: .25rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin-top: .25rem;
   }
   .site-nav-bar {
     flex-wrap: wrap;
   }
-  .site-nav-pages {
-    flex-wrap: wrap;
-  }
   .site-nav-links {
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .site-nav-pages {
     flex-wrap: wrap;
   }
   .scene-inner {
@@ -307,21 +339,25 @@ strong { color: var(--fg); }
   align-items: stretch;
   padding: 0;
   background: #3d2817;
+  overflow: hidden;
 }
 
 .theme-pokemon .about-panel {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 0;
   align-items: stretch;
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Left: ITEMS-style panel – extends to middle of page */
+/* Left: ITEMS-style panel – extends to middle of page; stacks underneath when narrow */
 .theme-pokemon .about-left.pkmn-items-panel {
-  flex: 0 0 50%;
-  min-width: 200px;
+  flex: 1 1 200px;
+  min-width: 180px;
   background: #6bcf7f;
   border: 4px solid #5c4a38;
   border-right-width: 3px;
@@ -365,9 +401,9 @@ strong { color: var(--fg); }
   display: block;
 }
 
-/* Right: cream bio panel */
+/* Right: cream bio panel – stacks below photo when narrow */
 .theme-pokemon .about-right.pkmn-bio-panel {
-  flex: 1;
+  flex: 1 1 220px;
   min-width: 0;
   background: #e8e4b8;
   border: 4px solid #5c4a38;
@@ -375,6 +411,8 @@ strong { color: var(--fg); }
   margin: 0;
   padding: 1.5rem 2rem;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
   text-align: left;
 }
 
@@ -393,7 +431,7 @@ strong { color: var(--fg); }
   text-align: left;
 }
 
-/* Bottom: blue bar – all buttons in one row */
+/* Bottom: blue bar – stays at bottom of GBA screen */
 .theme-pokemon .about-bottom.pkmn-blue-bar {
   background: #1e4d5c;
   border: 4px solid #5c4a38;
