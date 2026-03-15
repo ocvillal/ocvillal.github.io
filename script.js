@@ -51,21 +51,37 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!box) return;
     const name = document.getElementById("project-selected-name");
     const subtitle = document.getElementById("project-subtitle");
+    const imgWrap = document.getElementById("project-image-wrap");
+    const img = document.getElementById("project-selected-image");
     const desc = document.getElementById("project-selected-desc");
     const techList = document.getElementById("project-tech-list");
     const linksWrap = document.getElementById("project-selected-links");
     if (name) name.textContent = box.dataset.name || "";
     if (subtitle) subtitle.textContent = box.dataset.subtitle || "";
+    const imageSrc = box.dataset.image || "";
+    if (img && imgWrap) {
+      if (imageSrc) {
+        img.src = imageSrc;
+        img.alt = box.dataset.name ? `${box.dataset.name} preview` : "";
+        imgWrap.classList.remove("has-no-image");
+      } else {
+        img.removeAttribute("src");
+        img.alt = "";
+        imgWrap.classList.add("has-no-image");
+      }
+    }
     if (desc) desc.textContent = box.dataset.desc || "";
     const tech = box.dataset.tech || "";
     if (techList) {
       techList.innerHTML = tech.split("|").filter(Boolean).map(t => `<li>${t.trim()}</li>`).join("") || "<li>—</li>";
     }
-    const code = box.dataset.code;
-    const demo = box.dataset.demo;
+    const code = (box.dataset.code || "").trim();
+    const demo = (box.dataset.demo || "").trim();
+    const video = (box.dataset.video || "").trim();
     let html = "";
     if (demo && demo !== "#") html += `<a href="${demo}" target="_blank" rel="noreferrer" class="project-link">Visit</a>`;
-    else if (code && code !== "#") html += `<a href="${code}" target="_blank" rel="noreferrer" class="project-link">Code</a>`;
+    if (code && code !== "#") html += `<a href="${code}" target="_blank" rel="noreferrer" class="project-link">Code</a>`;
+    if (video && video !== "#") html += `<a href="${video}" target="_blank" rel="noreferrer" class="project-link project-link-video">Demo</a>`;
     if (linksWrap) linksWrap.innerHTML = html || "";
   };
   document.querySelectorAll(".project-box").forEach((box) => {
@@ -77,6 +93,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   const initialProject = document.querySelector(".project-box-selected");
   if (initialProject) updateProjectPanel(initialProject);
+
+  // Set cropped thumbnail in each project box from data-image
+  document.querySelectorAll(".project-box").forEach((box) => {
+    const wrap = box.querySelector(".project-box-thumb-wrap");
+    const thumb = box.querySelector(".project-box-thumb");
+    const src = box.dataset.image || "";
+    if (wrap && thumb) {
+      if (src) {
+        thumb.src = src;
+        thumb.alt = box.dataset.name ? `${box.dataset.name} preview` : "";
+        wrap.classList.add("has-image");
+      } else {
+        wrap.classList.remove("has-image");
+      }
+    }
+  });
 
   // Menu button toggle (mobile/breakpoint)
   document.querySelectorAll(".pkmn-menu-btn").forEach((btn) => {

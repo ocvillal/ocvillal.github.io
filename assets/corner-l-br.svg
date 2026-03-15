@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- 8-bit BR: dark outline → blue glow → pink frame → light pink highlight -->
+  <!-- Layer 1: dark outline -->
+  <rect x="0" y="60" width="64" height="4" fill="#0369a1"/>
+  <rect x="60" y="0" width="4" height="60" fill="#0369a1"/>
+  <!-- Layer 2: light blue glow -->
+  <rect x="4" y="52" width="56" height="8" fill="#7dd3fc"/>
+  <rect x="52" y="4" width="8" height="48" fill="#7dd3fc"/>
+  <!-- Layer 3: magenta-pink frame -->
+  <rect x="4" y="44" width="48" height="8" fill="#ec4899"/>
+  <rect x="44" y="4" width="8" height="40" fill="#ec4899"/>
+  <!-- Layer 4: inner highlight -->
+  <rect x="20" y="40" width="40" height="4" fill="#f9a8d4"/>
+  <rect x="40" y="4" width="4" height="36" fill="#f9a8d4"/>
+</svg>

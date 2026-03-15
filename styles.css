@@ -102,6 +102,11 @@ strong { color: var(--fg); }
 @media (max-width: 900px) {
   .gba-mid {
     min-height: 50vh;
+    grid-template-columns: 1fr;
+  }
+  .gba-bezel {
+    width: 100%;
+    min-width: 0;
   }
   .gba-screen {
     min-height: 40vh;
@@ -109,12 +114,13 @@ strong { color: var(--fg); }
   .gba-screen-inner {
     min-height: 35vh;
   }
-  .gba-mid {
-    grid-template-columns: 0 1fr 0;
-  }
   .gba-left,
-  .gba-right {
-    display: none;
+  .gba-right,
+  .gba-dpad,
+  .gba-ab,
+  .gba-vents,
+  .gba-left-buttons {
+    display: none !important;
   }
   /* Force vertical stack: green box + picture on top, beige bio box directly below (where brown area is) */
   .theme-pokemon .about-panel {
@@ -184,11 +190,27 @@ strong { color: var(--fg); }
   .theme-mariokart .projects-grid {
     min-height: 0;
   }
+  /* Boxes 15%+15% smaller when layout shifts; then scale with viewport as screen gets smaller */
   .theme-mariokart .projects-grid {
-    gap: 1rem;
-    padding: .75rem;
-    max-width: 500px;
-    max-height: 500px;
+    gap: clamp(0.5rem, 2.2vw, .9rem);
+    padding: clamp(0.4rem, 1.8vw, .72rem);
+    max-width: clamp(240px, 52vw, 434px);
+    max-height: clamp(240px, 52vw, 434px);
+    grid-template-columns: repeat(3, minmax(min(48px, 12vw), 1fr));
+    grid-template-rows: repeat(3, minmax(min(48px, 12vw), 1fr));
+  }
+  /* Projects: show Menu button, hide nav until open (same as home) */
+  .theme-mariokart .projects-bottom .pkmn-menu-btn {
+    display: inline-block !important;
+  }
+  .theme-mariokart .projects-bottom .pkmn-bar-nav-wrap {
+    display: none !important;
+  }
+  .theme-mariokart .projects-bottom.pkmn-blue-bar.is-menu-open .pkmn-bar-nav-wrap {
+    display: flex !important;
+    flex-wrap: nowrap;
+    gap: .4rem;
+    align-items: center;
   }
 }
 
@@ -221,6 +243,21 @@ strong { color: var(--fg); }
     flex-wrap: wrap;
   }
   .theme-pokemon .pkmn-blue-bar .about-buttons {
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: .25rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin-top: .25rem;
+  }
+  .theme-mariokart .projects-bottom.pkmn-blue-bar {
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .theme-mariokart .projects-bottom .pkmn-bar-nav-wrap {
+    flex-wrap: wrap;
+  }
+  .theme-mariokart .projects-bottom .about-buttons {
     flex-basis: 100%;
     flex-wrap: wrap;
     justify-content: center;
@@ -297,6 +334,7 @@ strong { color: var(--fg); }
     inset 0 0 40px rgba(0,0,0,0.6);
 }
 
+/* Scanlines on screen-inner kept for fallback */
 .gba-screen-inner::after {
   content: "";
   position: absolute;
@@ -310,6 +348,23 @@ strong { color: var(--fg); }
   );
   pointer-events: none;
   z-index: 5;
+}
+
+/* Scanlines on gba-screen so they cover ALL content on every page/panel */
+.gba-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
 }
 
 /* Scenes within screen */
@@ -597,8 +652,8 @@ strong { color: var(--fg); }
    Mario Kart – Choose a Character screen theme
    ============================================================ */
 
-/* Sky + cloud background */
-.theme-mariokart .scene-inner {
+/* Sky + cloud background (used when not using projects frame) */
+.theme-mariokart .scene-inner:not(.scene-inner-projects) {
   background:
     radial-gradient(ellipse at 15% 25%, rgba(255,255,255,0.85) 0%, transparent 18%),
     radial-gradient(ellipse at 40% 15%, rgba(255,255,255,0.7) 0%, transparent 12%),
@@ -611,13 +666,132 @@ strong { color: var(--fg); }
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
 }
 
-/* Projects full-screen layout */
-.scene-inner-projects {
+/* Projects: same structure as home – pink/green/yellow with exact same border sizes and smooth corners */
+.theme-mariokart .scene-inner-projects {
   display: flex;
   flex-direction: column;
-  padding: .4rem .5rem .35rem;
+  gap: 0;
+  align-items: stretch;
+  padding: 0;
+  background: #e64195;
   overflow: hidden;
   height: 100%;
+  border-radius: 10px;
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+/* Same sizes as home: 4px frame border, 3px where bar meets panel; radius so corners connect smoothly */
+.theme-mariokart .projects-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: .4rem .5rem .35rem;
+  border: 4px solid #e64195;
+  border-bottom-width: 3px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #93c5fd 0%, #bfdbfe 40%, #dbeafe 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+.theme-mariokart .projects-panel .projects-title {
+  flex-shrink: 0;
+}
+
+.theme-mariokart .projects-panel .projects-layout {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Projects bottom bar – same sizes as home: 4px border, 3px top for smooth connection; rounded bottom corners */
+.theme-mariokart .projects-bottom.pkmn-blue-bar {
+  background: #A8D0EE;
+  border: 4px solid #e64195;
+  border-top-width: 3px;
+  border-radius: 0 0 6px 6px;
+  padding: .5rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+.theme-mariokart .projects-bottom .pkmn-bar-icon {
+  color: #fde047;
+  font-size: 1.1rem;
+}
+
+.theme-mariokart .projects-bottom .pkmn-menu-btn {
+  display: none;
+  padding: .45rem .9rem;
+  font-size: .55rem;
+  color: #fff;
+  background: #ea580c;
+  border: 2px solid rgba(0,0,0,0.3);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.theme-mariokart .projects-bottom .pkmn-bar-nav-wrap {
+  display: flex;
+  flex: 1;
+  flex-wrap: nowrap;
+  gap: .4rem;
+  align-items: center;
+}
+
+.theme-mariokart .projects-bottom .about-page-btn {
+  display: inline-block;
+  padding: .4rem .6rem;
+  font-size: .5rem;
+  color: #fff;
+  text-decoration: none;
+  border: 2px solid rgba(0,0,0,0.25);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  transition: filter .15s;
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+}
+
+.theme-mariokart .projects-bottom .about-page-btn:hover { filter: brightness(1.2); }
+.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="about"]      { background: #dc2626; border-color: #b91c1c; }
+.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="publications"] { background: #0d9488; border-color: #0f766e; }
+.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="experience"] { background: #16a34a; border-color: #15803d; }
+.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="contact"] { background: #ec4899; border-color: #db2777; }
+
+.theme-mariokart .projects-bottom .about-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .5rem;
+}
+
+.theme-mariokart .projects-bottom .about-btn {
+  display: inline-block;
+  padding: .4rem .7rem;
+  font-size: .5rem;
+  color: #1e3a8a;
+  text-decoration: none;
+  background: #fef9c3;
+  border: 2px solid #eab308;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
+  transition: filter .15s;
+}
+
+.theme-mariokart .projects-bottom .about-btn:hover {
+  filter: brightness(1.1);
+}
+
+.theme-mariokart .projects-bottom .about-page-btn:active,
+.theme-mariokart .projects-bottom .about-btn:active {
+  box-shadow:
+    inset 0 -1px 0 rgba(0,0,0,0.5),
+    0 0 0 1px rgba(0,0,0,0.3);
+  transform: translateY(2px);
 }
 
 /* "CHOOSE A PROJECT" title – gold with blue outline */
@@ -691,6 +865,33 @@ strong { color: var(--fg); }
   font-size: .48rem;
   color: #1d4ed8;
   margin: 0;
+}
+
+/* Picture under subtitle – always fits within the box */
+.project-bio-image-wrap {
+  flex: 0 0 auto;
+  width: 100%;
+  max-height: 120px;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: rgba(29, 78, 216, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.project-bio-image-wrap:empty,
+.project-bio-image-wrap.has-no-image {
+  display: none;
+}
+.project-bio-image {
+  width: 100%;
+  height: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  vertical-align: middle;
 }
 
 /* Description paragraph */
@@ -792,56 +993,81 @@ strong { color: var(--fg); }
   border-color: #3b82f6;
 }
 
-/* Selected: pink L-shaped corners with dark pink outline (Mario Kart style) */
+/* Selected: pink fill only; corner L’s are separate elements below */
 .project-box-selected {
   border: 3px solid #3b82f6 !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 1px 3px rgba(0,0,0,0.2) !important;
   overflow: visible;
   position: relative;
-  padding: 10px;
-  margin: -10px;
-  background-image:
-    /* Dark pink outline around each L – thicker, sits behind pink */
-    linear-gradient(90deg, #9f1239 10px, transparent 10px),
-    linear-gradient(180deg, #9f1239 10px, transparent 10px),
-    linear-gradient(270deg, #9f1239 10px, transparent 10px),
-    linear-gradient(180deg, #9f1239 10px, transparent 10px),
-    linear-gradient(90deg, #9f1239 10px, transparent 10px),
-    linear-gradient(0deg, #9f1239 10px, transparent 10px),
-    linear-gradient(270deg, #9f1239 10px, transparent 10px),
-    linear-gradient(0deg, #9f1239 10px, transparent 10px),
-    /* Pink L-shaped corners */
-    linear-gradient(90deg, #f472b6 8px, transparent 8px),
-    linear-gradient(180deg, #f472b6 8px, transparent 8px),
-    linear-gradient(270deg, #f472b6 8px, transparent 8px),
-    linear-gradient(180deg, #f472b6 8px, transparent 8px),
-    linear-gradient(90deg, #f472b6 8px, transparent 8px),
-    linear-gradient(0deg, #f472b6 8px, transparent 8px),
-    linear-gradient(270deg, #f472b6 8px, transparent 8px),
-    linear-gradient(0deg, #f472b6 8px, transparent 8px),
-    /* base fill */
-    linear-gradient(145deg, #f0c0e0 0%, #ddb8dd 100%);
-  background-size:
-    34px 34px, 34px 34px,
-    34px 34px, 34px 34px,
-    34px 34px, 34px 34px,
-    34px 34px, 34px 34px,
-    32px 32px, 32px 32px,
-    32px 32px, 32px 32px,
-    32px 32px, 32px 32px,
-    32px 32px, 32px 32px,
-    100% 100%;
-  background-position:
-    0 0, 0 0,
-    100% 0, 100% 0,
-    0 100%, 0 100%,
-    100% 100%, 100% 100%,
-    0 0, 0 0,
-    100% 0, 100% 0,
-    0 100%, 0 100%,
-    100% 100%, 100% 100%,
-    0 0;
-  background-repeat: no-repeat;
+  padding: .2rem;
+  background: linear-gradient(145deg, #f0c0e0 0%, #ddb8dd 100%);
+}
+
+/* Cropped thumbnail – exact size of box, never overflows */
+.project-box-thumb-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 5px;
+  z-index: 0;
+}
+.project-box-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.project-box-thumb-wrap:not(.has-image) .project-box-thumb {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Corner L shapes – 8-bit style, outside the box, only on selected */
+.project-box-corner {
+  display: none;
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+}
+.project-box-selected .project-box-corner {
+  display: block;
+}
+.project-box-corner-tl {
+  left: -16px;
+  top: -16px;
+  background: url("assets/corner-l-tl.svg") no-repeat 0 0;
+  background-size: 48px 48px;
+}
+.project-box-corner-tr {
+  right: -16px;
+  top: -16px;
+  left: auto;
+  background: url("assets/corner-l-tr.svg") no-repeat 0 0;
+  background-size: 48px 48px;
+}
+.project-box-corner-bl {
+  left: -16px;
+  bottom: -16px;
+  top: auto;
+  background: url("assets/corner-l-bl.svg") no-repeat 0 0;
+  background-size: 48px 48px;
+}
+.project-box-corner-br {
+  right: -16px;
+  bottom: -16px;
+  left: auto;
+  top: auto;
+  background: url("assets/corner-l-br.svg") no-repeat 0 0;
+  background-size: 48px 48px;
 }
 
 /* Number label in bottom-left corner */
@@ -849,7 +1075,7 @@ strong { color: var(--fg); }
   position: absolute;
   bottom: 3px;
   left: 3px;
-  z-index: 1;
+  z-index: 2;
   font-size: .5rem;
   background: #dc2626;
   color: #fff;
@@ -860,6 +1086,11 @@ strong { color: var(--fg); }
 }
 .project-box-icon {
   font-size: .85rem;
+  z-index: 2;
+  position: relative;
+}
+.project-box-thumb-wrap.has-image ~ .project-box-icon {
+  opacity: 0;
 }
 
 /* Metroid – deep space teal/orange */
@@ -1112,10 +1343,12 @@ strong { color: var(--fg); }
     inset 0 -4px 0 var(--gba-purple-lo);
 }
 
-.gba-bottom-left {display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 16px; }
+.gba-bottom-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 16px;
+}
 
 .gba-bottom-center {
   display: flex;
