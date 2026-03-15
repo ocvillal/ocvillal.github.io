@@ -155,29 +155,6 @@ strong { color: var(--fg); }
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  /* Menu button replaces nav at this size – clearly visible */
-  .theme-pokemon .pkmn-menu-btn {
-    display: inline-block !important;
-    padding: .45rem .9rem;
-    font-size: .55rem;
-    color: #fff;
-    background: #ea580c;
-    border: 2px solid rgba(0,0,0,0.3);
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-    cursor: pointer;
-    font-family: inherit;
-  }
-  .theme-pokemon .pkmn-menu-btn:hover { filter: brightness(1.2); }
-  /* Page buttons hidden by default when Menu appears – click Menu to show them */
-  .theme-pokemon .pkmn-bar-nav-wrap {
-    display: none !important;
-  }
-  .theme-pokemon .pkmn-blue-bar.is-menu-open .pkmn-bar-nav-wrap {
-    display: flex !important;
-    flex-wrap: nowrap;
-    gap: .4rem;
-    align-items: center;
-  }
   /* Projects: stack info above grid when purple sides go away (same as home) */
   .theme-mariokart .projects-layout {
     flex-direction: column;
@@ -198,19 +175,6 @@ strong { color: var(--fg); }
     max-height: clamp(240px, 52vw, 434px);
     grid-template-columns: repeat(3, minmax(min(48px, 12vw), 1fr));
     grid-template-rows: repeat(3, minmax(min(48px, 12vw), 1fr));
-  }
-  /* Projects: show Menu button, hide nav until open (same as home) */
-  .theme-mariokart .projects-bottom .pkmn-menu-btn {
-    display: inline-block !important;
-  }
-  .theme-mariokart .projects-bottom .pkmn-bar-nav-wrap {
-    display: none !important;
-  }
-  .theme-mariokart .projects-bottom.pkmn-blue-bar.is-menu-open .pkmn-bar-nav-wrap {
-    display: flex !important;
-    flex-wrap: nowrap;
-    gap: .4rem;
-    align-items: center;
   }
 }
 
@@ -239,9 +203,6 @@ strong { color: var(--fg); }
     flex-wrap: wrap;
     gap: .5rem;
   }
-  .theme-pokemon .pkmn-blue-bar .pkmn-bar-nav-wrap {
-    flex-wrap: wrap;
-  }
   .theme-pokemon .pkmn-blue-bar .about-buttons {
     flex-basis: 100%;
     flex-wrap: wrap;
@@ -253,9 +214,6 @@ strong { color: var(--fg); }
   .theme-mariokart .projects-bottom.pkmn-blue-bar {
     flex-wrap: wrap;
     gap: .5rem;
-  }
-  .theme-mariokart .projects-bottom .pkmn-bar-nav-wrap {
-    flex-wrap: wrap;
   }
   .theme-mariokart .projects-bottom .about-buttons {
     flex-basis: 100%;
@@ -365,6 +323,259 @@ strong { color: var(--fg); }
   );
   pointer-events: none;
   z-index: 9999;
+}
+
+/* Visit lightbox: darkens only the GBA screen, modal with page boxes */
+.visit-lbox {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s;
+  border-radius: 14px;
+}
+.visit-lbox.visit-lbox-is-open {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.visit-lbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: saturate(0.4) brightness(0.5);
+  -webkit-backdrop-filter: saturate(0.4) brightness(0.5);
+  border-radius: 14px;
+}
+
+.visit-lbox-panel {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(180deg, #c4a574 0%, #a68b5b 50%, #8b7355 100%);
+  border: 4px solid #5c4a38;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 8px 24px rgba(0,0,0,0.5);
+  padding: 0;
+  overflow: hidden;
+}
+/* Scanlines on Visit menu – same as screen */
+.visit-lbox-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.visit-lbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #5c4a38;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid #3d2817;
+}
+
+.visit-lbox-title {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #fef9c3;
+  letter-spacing: 0.15em;
+}
+
+.visit-lbox-close {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #fff;
+  background: #dc2626;
+  border: 2px solid #b91c1c;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  transition: filter 0.15s;
+}
+.visit-lbox-close:hover { filter: brightness(1.2); }
+
+.visit-lbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  padding: 1.25rem 1rem 1.5rem;
+}
+
+.visit-lbox-box {
+  padding: 0.9rem 1rem;
+  font-size: 0.5rem;
+  font-family: var(--font-sans);
+  color: #1e3a8a;
+  background: #e8e4b8;
+  border: 3px solid #5c4a38;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.5),
+    inset 0 -2px 0 rgba(0,0,0,0.15);
+  transition: filter 0.15s, transform 0.1s;
+}
+.visit-lbox-box:hover { filter: brightness(1.08); }
+.visit-lbox-box:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.2);
+}
+
+/* Info lightbox: same theme as Visit – Résumé, GitHub, Email, LinkedIn */
+.info-lbox {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s;
+  border-radius: 14px;
+}
+.info-lbox.info-lbox-is-open {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.info-lbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: saturate(0.4) brightness(0.5);
+  -webkit-backdrop-filter: saturate(0.4) brightness(0.5);
+  border-radius: 14px;
+}
+
+.info-lbox-panel {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(180deg, #c4a574 0%, #a68b5b 50%, #8b7355 100%);
+  border: 4px solid #5c4a38;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 8px 24px rgba(0,0,0,0.5);
+  padding: 0;
+  overflow: hidden;
+}
+.info-lbox-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.info-lbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #5c4a38;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid #3d2817;
+}
+
+.info-lbox-title {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #fef9c3;
+  letter-spacing: 0.15em;
+}
+
+.info-lbox-close {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #fff;
+  background: #dc2626;
+  border: 2px solid #b91c1c;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  transition: filter 0.15s;
+}
+.info-lbox-close:hover { filter: brightness(1.2); }
+
+.info-lbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  padding: 1.25rem 1rem 1.5rem;
+}
+
+.info-lbox-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1rem;
+  font-size: 0.5rem;
+  font-family: var(--font-sans);
+  color: #1e3a8a;
+  text-decoration: none;
+  background: #e8e4b8;
+  border: 3px solid #5c4a38;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.5),
+    inset 0 -2px 0 rgba(0,0,0,0.15);
+  transition: filter 0.15s, transform 0.1s;
+}
+.info-lbox-box:hover { filter: brightness(1.08); color: #1e3a8a; text-decoration: none; }
+.info-lbox-box:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.2);
 }
 
 /* Scenes within screen */
@@ -587,36 +798,34 @@ strong { color: var(--fg); }
 }
 
 .theme-pokemon .pkmn-menu-btn {
-  display: none;
-}
-
-.theme-pokemon .pkmn-bar-nav-wrap {
-  display: flex;
-  flex: 1;
-  flex-wrap: nowrap;
-  gap: .4rem;
-  align-items: center;
-}
-
-
-.theme-pokemon .pkmn-blue-bar .about-page-btn {
   display: inline-block;
-  padding: .4rem .6rem;
-  font-size: .5rem;
+  padding: .45rem .9rem;
+  font-size: .55rem;
   color: #fff;
-  text-decoration: none;
-  border: 2px solid rgba(0,0,0,0.25);
+  background: #ea580c;
+  border: 2px solid rgba(0,0,0,0.3);
   box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  transition: filter .15s;
   cursor: pointer;
   font-family: inherit;
 }
+.theme-pokemon .pkmn-menu-btn:hover { filter: brightness(1.2); }
 
-.theme-pokemon .about-page-btn:hover { filter: brightness(1.2); }
-.theme-pokemon .about-page-btn[data-scene-target="projects"]  { background: #dc2626; border-color: #b91c1c; }
-.theme-pokemon .about-page-btn[data-scene-target="publications"] { background: #0d9488; border-color: #0f766e; }
-.theme-pokemon .about-page-btn[data-scene-target="experience"] { background: #16a34a; border-color: #15803d; }
-.theme-pokemon .about-page-btn[data-scene-target="contact"] { background: #ec4899; border-color: #db2777; }
+.theme-pokemon .pkmn-info-btn {
+  display: inline-block;
+  padding: .45rem .9rem;
+  font-size: .55rem;
+  color: #fff;
+  background: #ea580c;
+  border: 2px solid rgba(0,0,0,0.3);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-family: inherit;
+}
+.theme-pokemon .pkmn-info-btn:hover { filter: brightness(1.2); }
+
+.theme-pokemon .pkmn-blue-bar .about-buttons {
+  margin-left: auto;
+}
 
 .theme-pokemon .pkmn-blue-bar .about-buttons {
   display: flex;
@@ -725,7 +934,7 @@ strong { color: var(--fg); }
 }
 
 .theme-mariokart .projects-bottom .pkmn-menu-btn {
-  display: none;
+  display: inline-block;
   padding: .45rem .9rem;
   font-size: .55rem;
   color: #fff;
@@ -735,36 +944,23 @@ strong { color: var(--fg); }
   cursor: pointer;
   font-family: inherit;
 }
+.theme-mariokart .projects-bottom .pkmn-menu-btn:hover { filter: brightness(1.2); }
 
-.theme-mariokart .projects-bottom .pkmn-bar-nav-wrap {
-  display: flex;
-  flex: 1;
-  flex-wrap: nowrap;
-  gap: .4rem;
-  align-items: center;
-}
-
-.theme-mariokart .projects-bottom .about-page-btn {
+.theme-mariokart .projects-bottom .pkmn-info-btn {
   display: inline-block;
-  padding: .4rem .6rem;
-  font-size: .5rem;
+  padding: .45rem .9rem;
+  font-size: .55rem;
   color: #fff;
-  text-decoration: none;
-  border: 2px solid rgba(0,0,0,0.25);
+  background: #ea580c;
+  border: 2px solid rgba(0,0,0,0.3);
   box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  transition: filter .15s;
   cursor: pointer;
   font-family: inherit;
-  background: transparent;
 }
-
-.theme-mariokart .projects-bottom .about-page-btn:hover { filter: brightness(1.2); }
-.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="about"]      { background: #dc2626; border-color: #b91c1c; }
-.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="publications"] { background: #0d9488; border-color: #0f766e; }
-.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="experience"] { background: #16a34a; border-color: #15803d; }
-.theme-mariokart .projects-bottom .about-page-btn[data-scene-target="contact"] { background: #ec4899; border-color: #db2777; }
+.theme-mariokart .projects-bottom .pkmn-info-btn:hover { filter: brightness(1.2); }
 
 .theme-mariokart .projects-bottom .about-buttons {
+  margin-left: auto;
   display: flex;
   flex-wrap: nowrap;
   gap: .5rem;
@@ -786,7 +982,6 @@ strong { color: var(--fg); }
   filter: brightness(1.1);
 }
 
-.theme-mariokart .projects-bottom .about-page-btn:active,
 .theme-mariokart .projects-bottom .about-btn:active {
   box-shadow:
     inset 0 -1px 0 rgba(0,0,0,0.5),
@@ -845,7 +1040,7 @@ strong { color: var(--fg); }
   box-shadow: inset 0 0 0 1px rgba(253,224,71,0.5);
 }
 
-/* Main title – gold with blue outline (matches projects title) */
+/* Main title – gold with blue outline (matches projects title); larger before layout shift */
 .project-bio-title {
   font-size: .72rem;
   color: #facc15 !important;
@@ -859,12 +1054,18 @@ strong { color: var(--fg); }
   margin: 0 0 .1rem;
   font-weight: 700;
 }
+@media (min-width: 901px) {
+  .project-bio-title { font-size: .92rem; }
+}
 
 /* Subtitle – blue to match theme */
 .project-bio-subtitle {
   font-size: .48rem;
   color: #1d4ed8;
   margin: 0;
+}
+@media (min-width: 901px) {
+  .project-bio-subtitle { font-size: .6rem; }
 }
 
 /* Picture under subtitle – always fits within the box */
@@ -901,6 +1102,9 @@ strong { color: var(--fg); }
   line-height: 1.55;
   margin: 0;
 }
+@media (min-width: 901px) {
+  .project-bio-desc { font-size: .58rem; }
+}
 
 /* Bulleted tech list */
 .project-bio-tech {
@@ -909,6 +1113,9 @@ strong { color: var(--fg); }
   font-size: .46rem;
   color: #000;
   line-height: 1.5;
+}
+@media (min-width: 901px) {
+  .project-bio-tech { font-size: .56rem; }
 }
 .project-bio-tech li { margin-bottom: .1rem; }
 
@@ -929,6 +1136,9 @@ strong { color: var(--fg); }
   border-radius: 4px;
   text-decoration: none;
   font-family: inherit;
+}
+@media (min-width: 901px) {
+  .project-link { font-size: .54rem; padding: .3rem .6rem; }
 }
 .project-link:hover { background: #fde047; text-decoration: none; }
 

@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const scenes = Array.from(document.querySelectorAll(".scene"));
+  const lbox = document.getElementById("visit-lbox");
+  const infoLbox = document.getElementById("info-lbox");
   let currentIndex = 0;
 
   const showScene = (index) => {
@@ -37,8 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Keyboard: arrow keys to navigate scenes
+  // Keyboard: arrow keys to navigate scenes (skip when Visit or Info lightbox is open)
   document.addEventListener("keydown", (e) => {
+    if (lbox && lbox.classList.contains("visit-lbox-is-open")) return;
+    if (infoLbox && infoLbox.classList.contains("info-lbox-is-open")) return;
     if (e.key === "ArrowRight" || e.key === "ArrowDown") {
       showScene((currentIndex + 1) % scenes.length);
     } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
@@ -110,14 +114,60 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Menu button toggle (mobile/breakpoint)
+  // Menu button → open Visit lightbox (darkens screen, shows page boxes)
+  const openLbox = () => {
+    if (!lbox) return;
+    lbox.classList.add("visit-lbox-is-open");
+    lbox.setAttribute("aria-hidden", "false");
+    document.querySelectorAll(".pkmn-menu-btn").forEach((b) => b.setAttribute("aria-expanded", "true"));
+  };
+  const closeLbox = () => {
+    if (!lbox) return;
+    lbox.classList.remove("visit-lbox-is-open");
+    lbox.setAttribute("aria-hidden", "true");
+    document.querySelectorAll(".pkmn-menu-btn").forEach((b) => b.setAttribute("aria-expanded", "false"));
+  };
   document.querySelectorAll(".pkmn-menu-btn").forEach((btn) => {
+    btn.addEventListener("click", openLbox);
+  });
+  const lboxBackdrop = lbox && lbox.querySelector(".visit-lbox-backdrop");
+  const lboxClose = lbox && lbox.querySelector(".visit-lbox-close");
+  if (lboxBackdrop) lboxBackdrop.addEventListener("click", closeLbox);
+  if (lboxClose) lboxClose.addEventListener("click", closeLbox);
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (lbox && lbox.classList.contains("visit-lbox-is-open")) closeLbox();
+    else if (infoLbox && infoLbox.classList.contains("info-lbox-is-open")) closeInfoLbox();
+  });
+
+  // Info button → open Info lightbox (same theme as Visit: Résumé, GitHub, Email, LinkedIn)
+  const openInfoLbox = () => {
+    if (!infoLbox) return;
+    infoLbox.classList.add("info-lbox-is-open");
+    infoLbox.setAttribute("aria-hidden", "false");
+    document.querySelectorAll(".pkmn-info-btn").forEach((b) => b.setAttribute("aria-expanded", "true"));
+  };
+  const closeInfoLbox = () => {
+    if (!infoLbox) return;
+    infoLbox.classList.remove("info-lbox-is-open");
+    infoLbox.setAttribute("aria-hidden", "true");
+    document.querySelectorAll(".pkmn-info-btn").forEach((b) => b.setAttribute("aria-expanded", "false"));
+  };
+  document.querySelectorAll(".pkmn-info-btn").forEach((btn) => {
+    btn.addEventListener("click", openInfoLbox);
+  });
+  const infoLboxBackdrop = infoLbox && infoLbox.querySelector(".info-lbox-backdrop");
+  const infoLboxClose = infoLbox && infoLbox.querySelector(".info-lbox-close");
+  if (infoLboxBackdrop) infoLboxBackdrop.addEventListener("click", closeInfoLbox);
+  if (infoLboxClose) infoLboxClose.addEventListener("click", closeInfoLbox);
+
+  // Visit lightbox page boxes: go to scene and close
+  document.querySelectorAll(".visit-lbox-box").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const bar = btn.closest(".pkmn-blue-bar");
-      if (bar) {
-        bar.classList.toggle("is-menu-open");
-        btn.setAttribute("aria-expanded", bar.classList.contains("is-menu-open"));
-      }
+      const target = btn.getAttribute("data-scene-target");
+      const index = scenes.findIndex((s) => s.dataset.scene === target);
+      if (index !== -1) showScene(index);
+      closeLbox();
     });
   });
 
@@ -133,6 +183,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let scrollAccum = 0;
   const scrollThreshold = 400;
   document.addEventListener("wheel", (e) => {
+    if (lbox && lbox.classList.contains("visit-lbox-is-open")) return;
+    if (infoLbox && infoLbox.classList.contains("info-lbox-is-open")) return;
     e.preventDefault();
     scrollAccum += e.deltaY;
     if (scrollAccum >= scrollThreshold) {

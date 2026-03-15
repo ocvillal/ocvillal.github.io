@@ -71,18 +71,8 @@
                   </div>
                   <div class="about-bottom pkmn-blue-bar">
                     <span class="pkmn-bar-icon">★</span>
-                    <button type="button" class="pkmn-menu-btn" aria-label="Toggle page menu" aria-expanded="false">Menu</button>
-                    <div class="pkmn-bar-nav-wrap">
-                      <button type="button" class="about-page-btn" data-scene-target="projects">Projects</button>
-                      <button type="button" class="about-page-btn" data-scene-target="publications">Publications</button>
-                      <button type="button" class="about-page-btn" data-scene-target="experience">Experience</button>
-                      <button type="button" class="about-page-btn" data-scene-target="contact">Contact</button>
-                    </div>
-                    <div class="about-buttons">
-                      <a href="documents/Octavio_Villalobos_Resume.pdf" target="_blank" rel="noreferrer" class="about-btn">Résumé</a>
-                      <a href="https://github.com/ocvillal" target="_blank" rel="noreferrer" class="about-btn">GitHub</a>
-                      <a href="https://www.linkedin.com/in/octavio-villalobos/" target="_blank" rel="noreferrer" class="about-btn">LinkedIn</a>
-                    </div>
+                    <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
+                    <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
                   </div>
                 </div>
               </section>
@@ -265,18 +255,8 @@
                   </div>
                   <div class="projects-bottom pkmn-blue-bar">
                     <span class="pkmn-bar-icon">★</span>
-                    <button type="button" class="pkmn-menu-btn" aria-label="Toggle page menu" aria-expanded="false">Menu</button>
-                    <div class="pkmn-bar-nav-wrap">
-                      <button type="button" class="about-page-btn" data-scene-target="about">About</button>
-                      <button type="button" class="about-page-btn" data-scene-target="publications">Publications</button>
-                      <button type="button" class="about-page-btn" data-scene-target="experience">Experience</button>
-                      <button type="button" class="about-page-btn" data-scene-target="contact">Contact</button>
-                    </div>
-                    <div class="about-buttons">
-                      <a href="documents/Octavio_Villalobos_Resume.pdf" target="_blank" rel="noreferrer" class="about-btn">Résumé</a>
-                      <a href="https://github.com/ocvillal" target="_blank" rel="noreferrer" class="about-btn">GitHub</a>
-                      <a href="https://www.linkedin.com/in/octavio-villalobos/" target="_blank" rel="noreferrer" class="about-btn">LinkedIn</a>
-                    </div>
+                    <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
+                    <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
                   </div>
                 </div>
               </section>
@@ -343,6 +323,41 @@
               </section>
 
             </div><!-- /.gba-screen-inner -->
+
+            <!-- Visit lightbox: darkens screen only, shows page boxes -->
+            <div class="visit-lbox" id="visit-lbox" role="dialog" aria-modal="true" aria-labelledby="visit-lbox-title" aria-hidden="true">
+              <div class="visit-lbox-backdrop" aria-hidden="true"></div>
+              <div class="visit-lbox-panel">
+                <div class="visit-lbox-header">
+                  <h2 class="visit-lbox-title" id="visit-lbox-title">Visit</h2>
+                  <button type="button" class="visit-lbox-close" aria-label="Close menu">&times;</button>
+                </div>
+                <div class="visit-lbox-grid">
+                  <button type="button" class="visit-lbox-box" data-scene-target="about">About</button>
+                  <button type="button" class="visit-lbox-box" data-scene-target="projects">Projects</button>
+                  <button type="button" class="visit-lbox-box" data-scene-target="publications">Publications</button>
+                  <button type="button" class="visit-lbox-box" data-scene-target="experience">Experience</button>
+                  <button type="button" class="visit-lbox-box" data-scene-target="contact">Contact</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Info lightbox: same theme as Visit, Résumé / GitHub / Email / LinkedIn -->
+            <div class="info-lbox" id="info-lbox" role="dialog" aria-modal="true" aria-labelledby="info-lbox-title" aria-hidden="true">
+              <div class="info-lbox-backdrop" aria-hidden="true"></div>
+              <div class="info-lbox-panel">
+                <div class="info-lbox-header">
+                  <h2 class="info-lbox-title" id="info-lbox-title">Info</h2>
+                  <button type="button" class="info-lbox-close" aria-label="Close menu">&times;</button>
+                </div>
+                <div class="info-lbox-grid">
+                  <a href="documents/Octavio_Villalobos_Resume.pdf" target="_blank" rel="noreferrer" class="info-lbox-box">Résumé</a>
+                  <a href="https://github.com/ocvillal" target="_blank" rel="noreferrer" class="info-lbox-box">GitHub</a>
+                  <a href="mailto:ocvillal@ucsc.edu" class="info-lbox-box">Email</a>
+                  <a href="https://www.linkedin.com/in/octavio-villalobos/" target="_blank" rel="noreferrer" class="info-lbox-box">LinkedIn</a>
+                </div>
+              </div>
+            </div>
           </div><!-- /.gba-screen -->
         </div><!-- /.gba-bezel -->
 
