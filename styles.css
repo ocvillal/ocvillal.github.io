@@ -198,31 +198,6 @@ strong { color: var(--fg); }
   .theme-pokemon .pkmn-photo-wrap .about-photo {
     max-width: 160px !important;
   }
-  /* Blue bar: page buttons on top row, Résumé/GitHub/LinkedIn underneath */
-  .theme-pokemon .about-bottom.pkmn-blue-bar {
-    flex-wrap: wrap;
-    gap: .5rem;
-  }
-  .theme-pokemon .pkmn-blue-bar .about-buttons {
-    flex-basis: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-top: .25rem;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    margin-top: .25rem;
-  }
-  .theme-mariokart .projects-bottom.pkmn-blue-bar {
-    flex-wrap: wrap;
-    gap: .5rem;
-  }
-  .theme-mariokart .projects-bottom .about-buttons {
-    flex-basis: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-top: .25rem;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    margin-top: .25rem;
-  }
   .site-nav-bar {
     flex-wrap: wrap;
   }
@@ -596,6 +571,115 @@ strong { color: var(--fg); }
   scrollbar-color: var(--gba-purple-lo) transparent;
 }
 
+/* Framed scenes (Publications / Experience / Contact) like home/projects */
+.scene-inner.scene-inner-framed {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.scene-inner.scene-inner-framed .scene-content {
+  padding: 1.6rem 2rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gba-purple-lo) transparent;
+}
+
+/* Thick panel border + clean join to bottom bar (like projects-panel) */
+.scene-inner.scene-inner-framed .scene-content {
+  position: relative;
+  border: 4px solid rgba(0,0,0,0.18);
+  border-bottom-width: 0;
+  border-radius: 6px 6px 0 0;
+  overflow-x: hidden; /* keep scroll only on Y */
+}
+
+/* Theme-specific border colors for the framed scenes */
+.theme-metroid .scene-inner.scene-inner-framed .scene-content {
+  border-color: rgba(45,212,191,0.65);
+}
+.theme-zelda .scene-inner.scene-inner-framed .scene-content {
+  border-color: rgba(250,204,21,0.55);
+}
+.theme-kirby .scene-inner.scene-inner-framed .scene-content {
+  border-color: rgba(254,202,202,0.65);
+}
+
+/* ── Unified bottom bar – identical layout on every page ──────── */
+.scene-bottom.pkmn-blue-bar {
+  padding: .5rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  border: 4px solid rgba(0,0,0,0.25);
+  border-top-width: 3px;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Menu / Info buttons – same style on every page */
+.scene-bottom .pkmn-menu-btn,
+.scene-bottom .pkmn-info-btn {
+  display: inline-block;
+  padding: .45rem .9rem;
+  font-size: .55rem;
+  color: #fff;
+  background: #ea580c;
+  border: 2px solid rgba(0,0,0,0.3);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-family: inherit;
+}
+.scene-bottom .pkmn-menu-btn:hover,
+.scene-bottom .pkmn-info-btn:hover {
+  filter: brightness(1.2);
+}
+
+/* Star icon */
+.scene-bottom .pkmn-bar-icon {
+  font-size: 1.1rem;
+}
+
+/* ── Per-theme bottom bar colors ─────────────────────────────── */
+.theme-pokemon .scene-bottom.pkmn-blue-bar {
+  background: #1e4d5c;
+  border-color: rgba(92,74,56,0.55);
+  border-top-color: rgba(92,74,56,0.95);
+}
+.theme-pokemon .scene-bottom .pkmn-bar-icon { color: #fde047; }
+
+.theme-mariokart .scene-bottom.pkmn-blue-bar {
+  background: #A8D0EE;
+  border-color: rgba(230,65,149,0.55);
+  border-top-color: rgba(230,65,149,0.95);
+}
+.theme-mariokart .scene-bottom .pkmn-bar-icon { color: #fde047; }
+
+.theme-metroid .scene-bottom.pkmn-blue-bar {
+  background: #0d9488;
+  border-color: rgba(45,212,191,0.55);
+  border-top-color: rgba(45,212,191,0.9);
+}
+.theme-metroid .scene-bottom .pkmn-bar-icon { color: #fde68a; }
+
+.theme-zelda .scene-bottom.pkmn-blue-bar {
+  background: #14532d;
+  border-color: rgba(250,204,21,0.55);
+  border-top-color: rgba(250,204,21,0.75);
+}
+.theme-zelda .scene-bottom .pkmn-bar-icon { color: #fde68a; }
+
+.theme-kirby .scene-bottom.pkmn-blue-bar {
+  background: #ec4899;
+  border-color: rgba(254,202,202,0.55);
+  border-top-color: rgba(254,202,202,0.9);
+}
+.theme-kirby .scene-bottom .pkmn-bar-icon { color: #fff; }
+
 .eyebrow {
   font-size: .68rem;
   letter-spacing: .22em;
@@ -688,6 +772,7 @@ strong { color: var(--fg); }
   padding: 0;
   background: #3d2817;
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .theme-pokemon .about-panel {
@@ -709,6 +794,7 @@ strong { color: var(--fg); }
   background: #6bcf7f;
   border: 4px solid #5c4a38;
   border-right-width: 3px;
+  border-bottom-width: 0; /* let the blue bar draw the join */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -756,6 +842,7 @@ strong { color: var(--fg); }
   background: #e8e4b8;
   border: 4px solid #5c4a38;
   border-left-width: 3px;
+  border-bottom-width: 0; /* let the blue bar draw the join */
   margin: 0;
   padding: 1.5rem 2rem;
   overflow-y: auto;
@@ -779,83 +866,6 @@ strong { color: var(--fg); }
   text-align: left;
 }
 
-/* Bottom: blue bar – stays at bottom of GBA screen */
-.theme-pokemon .about-bottom.pkmn-blue-bar {
-  background: #1e4d5c;
-  border: 4px solid #5c4a38;
-  border-top-width: 3px;
-  padding: .5rem .9rem;
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-}
-
-.theme-pokemon .pkmn-bar-icon {
-  color: #fde047;
-  font-size: 1.1rem;
-}
-
-.theme-pokemon .pkmn-menu-btn {
-  display: inline-block;
-  padding: .45rem .9rem;
-  font-size: .55rem;
-  color: #fff;
-  background: #ea580c;
-  border: 2px solid rgba(0,0,0,0.3);
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  cursor: pointer;
-  font-family: inherit;
-}
-.theme-pokemon .pkmn-menu-btn:hover { filter: brightness(1.2); }
-
-.theme-pokemon .pkmn-info-btn {
-  display: inline-block;
-  padding: .45rem .9rem;
-  font-size: .55rem;
-  color: #fff;
-  background: #ea580c;
-  border: 2px solid rgba(0,0,0,0.3);
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  cursor: pointer;
-  font-family: inherit;
-}
-.theme-pokemon .pkmn-info-btn:hover { filter: brightness(1.2); }
-
-.theme-pokemon .pkmn-blue-bar .about-buttons {
-  margin-left: auto;
-}
-
-.theme-pokemon .pkmn-blue-bar .about-buttons {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: .5rem;
-}
-
-.theme-pokemon .pkmn-blue-bar .about-btn {
-  display: inline-block;
-  padding: .4rem .7rem;
-  font-size: .5rem;
-  color: #1e3a8a;
-  text-decoration: none;
-  background: #fef9c3;
-  border: 2px solid #eab308;
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
-  transition: filter .15s;
-}
-
-.theme-pokemon .pkmn-blue-bar .about-btn:hover {
-  filter: brightness(1.1);
-}
-
-.theme-pokemon .about-page-btn:active,
-.theme-pokemon .about-btn:active {
-  box-shadow:
-    inset 0 -1px 0 rgba(0,0,0,0.5),
-    0 0 0 1px rgba(0,0,0,0.3);
-  transform: translateY(2px);
-}
 
 /* ============================================================
    Mario Kart – Choose a Character screen theme
@@ -885,8 +895,7 @@ strong { color: var(--fg); }
   background: #e64195;
   overflow: hidden;
   height: 100%;
-  border-radius: 10px;
-  border: 2px solid rgba(0,0,0,0.15);
+  border-radius: 6px;
 }
 
 /* Same sizes as home: 4px frame border, 3px where bar meets panel; radius so corners connect smoothly */
@@ -898,8 +907,9 @@ strong { color: var(--fg); }
   overflow: hidden;
   margin: 0;
   padding: .4rem .5rem .35rem;
-  border: 4px solid #e64195;
-  border-bottom-width: 3px;
+  /* Use rgba so the join line can match brightness separately from side borders */
+  border: 4px solid rgba(230,65,149,0.65);
+  border-bottom-width: 0; /* let the bottom bar draw the join */
   border-radius: 6px 6px 0 0;
   background: linear-gradient(180deg, #93c5fd 0%, #bfdbfe 40%, #dbeafe 100%);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
@@ -914,80 +924,6 @@ strong { color: var(--fg); }
   min-height: 0;
 }
 
-/* Projects bottom bar – same sizes as home: 4px border, 3px top for smooth connection; rounded bottom corners */
-.theme-mariokart .projects-bottom.pkmn-blue-bar {
-  background: #A8D0EE;
-  border: 4px solid #e64195;
-  border-top-width: 3px;
-  border-radius: 0 0 6px 6px;
-  padding: .5rem .9rem;
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-}
-
-.theme-mariokart .projects-bottom .pkmn-bar-icon {
-  color: #fde047;
-  font-size: 1.1rem;
-}
-
-.theme-mariokart .projects-bottom .pkmn-menu-btn {
-  display: inline-block;
-  padding: .45rem .9rem;
-  font-size: .55rem;
-  color: #fff;
-  background: #ea580c;
-  border: 2px solid rgba(0,0,0,0.3);
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  cursor: pointer;
-  font-family: inherit;
-}
-.theme-mariokart .projects-bottom .pkmn-menu-btn:hover { filter: brightness(1.2); }
-
-.theme-mariokart .projects-bottom .pkmn-info-btn {
-  display: inline-block;
-  padding: .45rem .9rem;
-  font-size: .55rem;
-  color: #fff;
-  background: #ea580c;
-  border: 2px solid rgba(0,0,0,0.3);
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  cursor: pointer;
-  font-family: inherit;
-}
-.theme-mariokart .projects-bottom .pkmn-info-btn:hover { filter: brightness(1.2); }
-
-.theme-mariokart .projects-bottom .about-buttons {
-  margin-left: auto;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: .5rem;
-}
-
-.theme-mariokart .projects-bottom .about-btn {
-  display: inline-block;
-  padding: .4rem .7rem;
-  font-size: .5rem;
-  color: #1e3a8a;
-  text-decoration: none;
-  background: #fef9c3;
-  border: 2px solid #eab308;
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
-  transition: filter .15s;
-}
-
-.theme-mariokart .projects-bottom .about-btn:hover {
-  filter: brightness(1.1);
-}
-
-.theme-mariokart .projects-bottom .about-btn:active {
-  box-shadow:
-    inset 0 -1px 0 rgba(0,0,0,0.5),
-    0 0 0 1px rgba(0,0,0,0.3);
-  transform: translateY(2px);
-}
 
 /* "CHOOSE A PROJECT" title – gold with blue outline */
 .projects-title {
@@ -1092,7 +1028,6 @@ strong { color: var(--fg); }
   object-fit: contain;
   object-position: center;
   display: block;
-  vertical-align: middle;
 }
 
 /* Description paragraph */
@@ -1320,6 +1255,48 @@ strong { color: var(--fg); }
   border: 2px solid rgba(250,204,21,0.4);
 }
 .theme-zelda h2 { color: #fde68a; }
+
+/* Framed variant: remove extra theme border so only the framed panel border shows */
+.theme-metroid .scene-inner.scene-inner-framed,
+.theme-zelda .scene-inner.scene-inner-framed,
+.theme-kirby .scene-inner.scene-inner-framed {
+  border: none;
+}
+
+/* Match framed screen border color for framed-scene Menu/Info button outlines */
+.theme-metroid .scene-inner.scene-inner-framed .pkmn-menu-btn,
+.theme-metroid .scene-inner.scene-inner-framed .pkmn-info-btn {
+  border-color: rgba(45,212,191,0.85);
+}
+.theme-zelda .scene-inner.scene-inner-framed .pkmn-menu-btn,
+.theme-zelda .scene-inner.scene-inner-framed .pkmn-info-btn {
+  border-color: rgba(250,204,21,0.85);
+}
+.theme-kirby .scene-inner.scene-inner-framed .pkmn-menu-btn,
+.theme-kirby .scene-inner.scene-inner-framed .pkmn-info-btn {
+  border-color: rgba(254,202,202,0.9);
+}
+
+/* Experience timeline typography: less stretched, more readable */
+.theme-zelda .timeline-item h3 {
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+}
+.theme-zelda .timeline-item .meta {
+  font-size: .9rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 .35rem;
+  line-height: 1.35;
+}
+.theme-zelda .timeline-item ul {
+  margin: .4rem 0 0;
+  font-size: .88rem;
+}
+.theme-zelda .timeline-item li {
+  font-size: .88rem;
+  line-height: 1.55;
+}
 
 /* Kirby – soft pink clouds */
 .theme-kirby .scene-inner {
