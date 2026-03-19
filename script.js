@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (name)     name.textContent     = box.dataset.name     || "";
     if (subtitle) subtitle.textContent = box.dataset.subtitle || "";
 
-    const imageSrc = box.dataset.image || "";
+    const imageSrc = box.dataset.bioImage || box.dataset.image || "";
     if (img && imgWrap) {
       if (imageSrc) {
         img.src = imageSrc;
