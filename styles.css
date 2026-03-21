@@ -83,6 +83,15 @@ strong { color: var(--fg); }
   background: #22c55e;
   box-shadow: 0 0 6px #22c55e;
   animation: led-pulse 2.4s ease-in-out infinite;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Console powered off – LED red, no pulse */
+.gba-body.gba-powered-off .gba-power-led {
+  background: #dc2626;
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.85);
+  animation: none;
+  opacity: 1;
 }
 
 @keyframes led-pulse {
@@ -251,6 +260,7 @@ strong { color: var(--fg); }
     inset 0 0 40px rgba(0,0,0,0.6),
     0 0 0 1px #000;
   display: flex;
+  overflow: hidden; /* CRT collapse stays inside bezel */
 }
 
 /* inner "glass" screen, slightly inset */
@@ -266,6 +276,72 @@ strong { color: var(--fg); }
   box-shadow:
     inset 0 0 0 2px #111a2e,
     inset 0 0 40px rgba(0,0,0,0.6);
+  transform-origin: 50% 50%;
+  will-change: transform, filter;
+}
+
+/* CRT-style power off: brief brightening, then collapse to a line + black */
+@keyframes gba-crt-off {
+  0% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+  }
+  12% {
+    filter: brightness(1.45) contrast(1.08);
+  }
+  100% {
+    transform: scale(1, 0.02);
+    filter: brightness(0);
+  }
+}
+
+@keyframes gba-crt-on {
+  0% {
+    transform: scale(1, 0.02);
+    filter: brightness(0);
+  }
+  35% {
+    transform: scale(1, 1);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+  }
+}
+
+.gba-body.gba-crt-powering-off .gba-screen-inner {
+  animation: gba-crt-off 0.55s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
+}
+
+.gba-body.gba-crt-powering-on .gba-screen-inner {
+  animation: gba-crt-on 0.45s ease-out forwards;
+}
+
+.gba-body.gba-powered-off .gba-screen {
+  pointer-events: none;
+}
+
+.gba-body.gba-powered-off .gba-screen-inner {
+  transform: scale(1, 0.02);
+  filter: brightness(0);
+  visibility: hidden;
+}
+
+.gba-body.gba-powered-off .visit-lbox,
+.gba-body.gba-powered-off .info-lbox,
+.gba-body.gba-powered-off .controls-lbox {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gba-body.gba-crt-powering-off .gba-screen-inner,
+  .gba-body.gba-crt-powering-on .gba-screen-inner {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 /* Scanlines on screen-inner kept for fallback */
@@ -554,6 +630,144 @@ strong { color: var(--fg); }
   box-shadow: inset 0 0 0 2px rgba(0,0,0,0.2);
 }
 
+/* Controls lightbox: help / instructions (same shell as Info) */
+.controls-lbox {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s;
+  border-radius: 14px;
+}
+.controls-lbox.controls-lbox-is-open {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.controls-lbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: saturate(0.4) brightness(0.5);
+  -webkit-backdrop-filter: saturate(0.4) brightness(0.5);
+  border-radius: 14px;
+}
+
+.controls-lbox-panel {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: min(85vh, 520px);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #c4a574 0%, #a68b5b 50%, #8b7355 100%);
+  border: 4px solid #5c4a38;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 8px 24px rgba(0,0,0,0.5);
+  padding: 0;
+  overflow: hidden;
+}
+.controls-lbox-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.controls-lbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+  background: #5c4a38;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid #3d2817;
+  position: relative;
+  z-index: 2;
+}
+
+.controls-lbox-title {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #fef9c3;
+  letter-spacing: 0.15em;
+}
+
+.controls-lbox-close {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #fff;
+  background: #dc2626;
+  border: 2px solid #b91c1c;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  transition: filter 0.15s;
+}
+.controls-lbox-close:hover { filter: brightness(1.2); }
+
+.controls-lbox-content {
+  position: relative;
+  z-index: 2;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.85rem 1rem 1.1rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.controls-lbox-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.48rem;
+  line-height: 1.65;
+  color: #1e293b;
+  font-family: var(--font-sans);
+}
+.controls-lbox-list li {
+  margin-bottom: 0.55rem;
+}
+.controls-lbox-list li strong {
+  color: #0f172a;
+}
+.controls-lbox-list kbd {
+  display: inline-block;
+  padding: 0.08rem 0.28rem;
+  font-size: 0.85em;
+  font-family: inherit;
+  background: #e8e4b8;
+  border: 1px solid #5c4a38;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
 /* Scenes within screen */
 .gba-screen-inner .scene {
   position: absolute;
@@ -675,19 +889,22 @@ strong { color: var(--fg); }
 
 /* Menu / Info buttons – same style on every page */
 .scene-bottom .pkmn-menu-btn,
-.scene-bottom .pkmn-info-btn {
+.scene-bottom .pkmn-info-btn,
+.scene-bottom .pkmn-controls-btn {
   display: inline-block;
-  padding: .45rem .9rem;
-  font-size: .55rem;
+  padding: .45rem .65rem;
+  font-size: .5rem;
   color: #fff;
   background: #ea580c;
   border: 2px solid rgba(0,0,0,0.3);
   box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
   cursor: pointer;
   font-family: inherit;
+  white-space: nowrap;
 }
 .scene-bottom .pkmn-menu-btn:hover,
-.scene-bottom .pkmn-info-btn:hover {
+.scene-bottom .pkmn-info-btn:hover,
+.scene-bottom .pkmn-controls-btn:hover {
   filter: brightness(1.2);
 }
 
@@ -1316,18 +1533,35 @@ strong { color: var(--fg); }
   border: none;
 }
 
-/* Match framed screen border color for framed-scene Menu/Info button outlines */
+/* Match framed screen border color for framed-scene Menu/Info/Controls button outlines */
 .theme-metroid .scene-inner.scene-inner-framed .pkmn-menu-btn,
-.theme-metroid .scene-inner.scene-inner-framed .pkmn-info-btn {
+.theme-metroid .scene-inner.scene-inner-framed .pkmn-info-btn,
+.theme-metroid .scene-inner.scene-inner-framed .pkmn-controls-btn {
   border-color: rgba(45,212,191,0.85);
 }
 .theme-zelda .scene-inner.scene-inner-framed .pkmn-menu-btn,
-.theme-zelda .scene-inner.scene-inner-framed .pkmn-info-btn {
+.theme-zelda .scene-inner.scene-inner-framed .pkmn-info-btn,
+.theme-zelda .scene-inner.scene-inner-framed .pkmn-controls-btn {
   border-color: rgba(250,204,21,0.85);
 }
 .theme-kirby .scene-inner.scene-inner-framed .pkmn-menu-btn,
-.theme-kirby .scene-inner.scene-inner-framed .pkmn-info-btn {
+.theme-kirby .scene-inner.scene-inner-framed .pkmn-info-btn,
+.theme-kirby .scene-inner.scene-inner-framed .pkmn-controls-btn {
   border-color: rgba(254,202,202,0.9);
+}
+
+/* Pokémon (About): brown outline for Menu/Info/Controls */
+.theme-pokemon .scene-bottom .pkmn-menu-btn,
+.theme-pokemon .scene-bottom .pkmn-info-btn,
+.theme-pokemon .scene-bottom .pkmn-controls-btn {
+  border-color: rgba(92, 74, 56, 0.95); /* #5c4a38 – matches panel browns */
+}
+
+/* Mariokart (Projects): pink outline for Menu/Info/Controls */
+.theme-mariokart .scene-bottom .pkmn-menu-btn,
+.theme-mariokart .scene-bottom .pkmn-info-btn,
+.theme-mariokart .scene-bottom .pkmn-controls-btn {
+  border-color: rgba(230, 65, 149, 0.95); /* #e64195 – matches projects frame */
 }
 
 /* Experience timeline typography: less stretched, more readable */

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <titleHi >Octavio Villalobos</title>
+    <title>Octavio Villalobos</title>
     <meta name="description" content="Personal website for Octavio Villalobos." />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
     <link rel="stylesheet" href="styles.css" />
@@ -42,7 +42,7 @@
               <span class="small-label">SELECT</span>
             </div>
             <div class="left-buttons-row">
-              <button class="small-btn" type="button" data-scene-target="experience" aria-label="Experience"></button>
+              <button class="small-btn" type="button" id="gba-power-btn" aria-label="Power" aria-pressed="false"></button>
               <span class="small-label">START</span>
             </div>
           </div>
@@ -79,6 +79,7 @@
                     <span class="pkmn-bar-icon">★</span>
                     <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
                     <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
+                    <button type="button" class="pkmn-controls-btn" aria-label="Open Controls help" aria-expanded="false">Controls</button>
                   </div>
                 </div>
               </section>
@@ -271,6 +272,7 @@
                     <span class="pkmn-bar-icon">★</span>
                     <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
                     <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
+                    <button type="button" class="pkmn-controls-btn" aria-label="Open Controls help" aria-expanded="false">Controls</button>
                   </div>
                 </div>
               </section>
@@ -294,6 +296,7 @@
                     <span class="pkmn-bar-icon">★</span>
                     <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
                     <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
+                    <button type="button" class="pkmn-controls-btn" aria-label="Open Controls help" aria-expanded="false">Controls</button>
                   </div>
                 </div>
               </section>
@@ -347,6 +350,7 @@
                     <span class="pkmn-bar-icon">★</span>
                     <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
                     <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
+                    <button type="button" class="pkmn-controls-btn" aria-label="Open Controls help" aria-expanded="false">Controls</button>
                   </div>
                 </div>
               </section>
@@ -375,6 +379,7 @@
                     <span class="pkmn-bar-icon">★</span>
                     <button type="button" class="pkmn-menu-btn" aria-label="Open Visit menu" aria-expanded="false">Menu</button>
                     <button type="button" class="pkmn-info-btn" aria-label="Open Info menu" aria-expanded="false">Info</button>
+                    <button type="button" class="pkmn-controls-btn" aria-label="Open Controls help" aria-expanded="false">Controls</button>
                   </div>
                 </div>
               </section>
@@ -415,14 +420,41 @@
                 </div>
               </div>
             </div>
+
+            <!-- Controls lightbox: how to use the console -->
+            <div class="controls-lbox" id="controls-lbox" role="dialog" aria-modal="true" aria-labelledby="controls-lbox-title" aria-hidden="true">
+              <div class="controls-lbox-backdrop" aria-hidden="true"></div>
+              <div class="controls-lbox-panel">
+                <div class="controls-lbox-header">
+                  <h2 class="controls-lbox-title" id="controls-lbox-title">Controls</h2>
+                  <button type="button" class="controls-lbox-close" aria-label="Close">&times;</button>
+                </div>
+                <div class="controls-lbox-content">
+                  <ul class="controls-lbox-list">
+                    <li><strong>Top dots</strong> — Jump to Home, Projects, Publications, Experience, or Contact.</li>
+                    <li><strong>D-pad</strong> (<kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd>) — Go to the previous or next section.</li>
+                    <li><strong>SELECT</strong> — Open Publications.</li>
+                    <li><strong>START</strong> — Turn the console power on or off (top LED turns red when off).</li>
+                    <li><strong>Menu</strong> — Open the Visit menu to pick a page.</li>
+                    <li><strong>Info</strong> — Quick links: Résumé, GitHub, Email, LinkedIn.</li>
+                    <li><strong>A</strong> — Go to the Contact page.</li>
+                    <li><strong>B</strong> — Open the same Info menu as the Info button.</li>
+                    <li><strong>Arrow keys</strong> — Same as the D-pad when no dialog is open.</li>
+                    <li><strong>Mouse wheel</strong> — When you reach the top or bottom of scrollable text, scrolling moves to the next or previous section.</li>
+                    <li><strong>Touch</strong> — Swipe left or right on the screen to change sections.</li>
+                    <li><strong>Esc</strong> — Close Menu, Info, or this Controls panel.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div><!-- /.gba-screen -->
         </div><!-- /.gba-bezel -->
 
         <!-- Right: A/B buttons -->
         <div class="gba-right">
           <div class="gba-ab">
-            <button class="ab-btn btn-b" type="button" data-scenes-target="projects" data-scene-target="projects" aria-label="Projects">B</button>
-            <button class="ab-btn btn-a" type="button" data-scenes-target="about" data-scene-target="about" aria-label="About">A</button>
+            <button class="ab-btn btn-b" type="button" id="gba-btn-info" aria-label="Open Info menu">B</button>
+            <button class="ab-btn btn-a" type="button" id="gba-btn-contact" aria-label="Go to Contact">A</button>
           </div>
           <div class="gba-vents">
             <span></span><span></span><span></span><span></span>

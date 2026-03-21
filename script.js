@@ -1,17 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
   const scenes    = Array.from(document.querySelectorAll(".scene"));
   const lbox      = document.getElementById("visit-lbox");
-  const infoLbox  = document.getElementById("info-lbox");
+  const infoLbox     = document.getElementById("info-lbox");
+  const controlsLbox = document.getElementById("controls-lbox");
   const screen    = document.querySelector(".gba-screen");
   const dots      = Array.from(document.querySelectorAll(".scene-dot"));
+  const gbaBody   = document.querySelector(".gba-body");
+  const powerBtn  = document.getElementById("gba-power-btn");
 
   let currentIndex = 0;
+  try {
+    const saved = localStorage.getItem("lastSceneIndex");
+    if (saved != null) {
+      const n = parseInt(saved, 10);
+      if (!isNaN(n) && n >= 0 && n < scenes.length) currentIndex = n;
+    }
+  } catch (_) {}
+
   let isAnimating  = false;
+  let poweredOn    = true;
+  let powerAnimating = false;
+  const CRT_OFF_MS = 550;
+  const CRT_ON_MS  = 450;
 
   /* ── Scene switching ─────────────────────────────────────────── */
   const ANIM_MS = 260; // must be >= CSS animation duration
 
   const showScene = (index) => {
+    if (gbaBody?.classList.contains("gba-powered-off")) return;
     if (isAnimating) return;
     if (index < 0 || index >= scenes.length) index = 0;
     if (index === currentIndex) return;
@@ -38,16 +54,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }, ANIM_MS);
 
     updateDots(index);
+    try { localStorage.setItem("lastSceneIndex", String(index)); } catch (_) {}
   };
 
-  // Set initial aria-hidden state
-  scenes.forEach((s, i) => s.setAttribute("aria-hidden", i === 0 ? "false" : "true"));
+  // Set initial state from last visited (or 0)
+  scenes.forEach((s, i) => {
+    s.classList.toggle("scene-active", i === currentIndex);
+    s.setAttribute("aria-hidden", i === currentIndex ? "false" : "true");
+  });
 
   /* ── Page-dot indicators ─────────────────────────────────────── */
   const updateDots = (idx) => {
     dots.forEach((d, i) => d.classList.toggle("scene-dot-active", i === idx));
   };
-  updateDots(0);
+  updateDots(currentIndex);
+
+  const closeControlsLbox = () => {
+    if (!controlsLbox) return;
+    controlsLbox.classList.remove("controls-lbox-is-open");
+    controlsLbox.setAttribute("aria-hidden", "true");
+    document.querySelectorAll(".pkmn-controls-btn").forEach((b) =>
+      b.setAttribute("aria-expanded", "false")
+    );
+  };
 
   /* ── D-pad, scene-target buttons (including dots) ────────────── */
   document.querySelectorAll("[data-scene-target]").forEach((btn) => {
@@ -74,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     if (lbox?.classList.contains("visit-lbox-is-open"))    return;
     if (infoLbox?.classList.contains("info-lbox-is-open")) return;
+    if (controlsLbox?.classList.contains("controls-lbox-is-open")) return;
     if (e.key === "ArrowRight" || e.key === "ArrowDown")
       showScene((currentIndex + 1) % scenes.length);
     else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
@@ -94,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.addEventListener("touchend", (e) => {
       if (lbox?.classList.contains("visit-lbox-is-open"))    return;
       if (infoLbox?.classList.contains("info-lbox-is-open")) return;
+      if (controlsLbox?.classList.contains("controls-lbox-is-open")) return;
 
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
@@ -138,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("wheel", (e) => {
     if (lbox?.classList.contains("visit-lbox-is-open"))    return;
     if (infoLbox?.classList.contains("info-lbox-is-open")) return;
+    if (controlsLbox?.classList.contains("controls-lbox-is-open")) return;
 
     // Not at boundary: let the content scroll naturally and keep the flag clear
     if (!isAtScrollBoundary(e.target, e.deltaY)) return;
@@ -231,6 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ── Visit lightbox ──────────────────────────────────────────── */
   const openLbox = () => {
     if (!lbox) return;
+    closeControlsLbox();
     lbox.classList.add("visit-lbox-is-open");
     lbox.setAttribute("aria-hidden", "false");
     document.querySelectorAll(".pkmn-menu-btn").forEach((b) => b.setAttribute("aria-expanded", "true"));
@@ -251,6 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ── Info lightbox ───────────────────────────────────────────── */
   const openInfoLbox = () => {
     if (!infoLbox) return;
+    closeControlsLbox();
     infoLbox.classList.add("info-lbox-is-open");
     infoLbox.setAttribute("aria-hidden", "false");
     document.querySelectorAll(".pkmn-info-btn").forEach((b) => b.setAttribute("aria-expanded", "true"));
@@ -268,11 +302,81 @@ document.addEventListener("DOMContentLoaded", () => {
   if (infoLboxBackdrop) infoLboxBackdrop.addEventListener("click", closeInfoLbox);
   if (infoLboxClose)    infoLboxClose.addEventListener("click", closeInfoLbox);
 
+  /* ── Controls lightbox (help) ───────────────────────────────── */
+  const openControlsLbox = () => {
+    if (!controlsLbox) return;
+    closeLbox();
+    closeInfoLbox();
+    controlsLbox.classList.add("controls-lbox-is-open");
+    controlsLbox.setAttribute("aria-hidden", "false");
+    document.querySelectorAll(".pkmn-controls-btn").forEach((b) =>
+      b.setAttribute("aria-expanded", "true")
+    );
+  };
+
+  document.querySelectorAll(".pkmn-controls-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      if (gbaBody?.classList.contains("gba-powered-off")) return;
+      openControlsLbox();
+    })
+  );
+  const controlsBackdrop = controlsLbox?.querySelector(".controls-lbox-backdrop");
+  const controlsClose    = controlsLbox?.querySelector(".controls-lbox-close");
+  if (controlsBackdrop) controlsBackdrop.addEventListener("click", closeControlsLbox);
+  if (controlsClose)    controlsClose.addEventListener("click", closeControlsLbox);
+
+  /* ── A / B: Contact scene + Info lightbox (same as bar buttons) ─ */
+  document.getElementById("gba-btn-contact")?.addEventListener("click", () => {
+    if (gbaBody?.classList.contains("gba-powered-off")) return;
+    closeLbox();
+    closeInfoLbox();
+    closeControlsLbox();
+    const idx = scenes.findIndex((s) => s.dataset.scene === "contact");
+    if (idx !== -1) showScene(idx);
+  });
+
+  document.getElementById("gba-btn-info")?.addEventListener("click", () => {
+    if (gbaBody?.classList.contains("gba-powered-off")) return;
+    closeLbox();
+    closeControlsLbox();
+    openInfoLbox();
+  });
+
+  /* ── START = power on/off (CRT-style) ───────────────────────── */
+  powerBtn?.addEventListener("click", () => {
+    if (powerAnimating) return;
+    if (poweredOn) {
+      powerAnimating = true;
+      closeLbox();
+      closeInfoLbox();
+      closeControlsLbox();
+      gbaBody.classList.add("gba-crt-powering-off");
+      powerBtn.setAttribute("aria-pressed", "true");
+      setTimeout(() => {
+        gbaBody.classList.remove("gba-crt-powering-off");
+        gbaBody.classList.add("gba-powered-off");
+        poweredOn = false;
+        powerAnimating = false;
+      }, CRT_OFF_MS);
+    } else {
+      powerAnimating = true;
+      gbaBody.classList.remove("gba-powered-off");
+      gbaBody.classList.add("gba-crt-powering-on");
+      powerBtn.setAttribute("aria-pressed", "false");
+      setTimeout(() => {
+        gbaBody.classList.remove("gba-crt-powering-on");
+        poweredOn = true;
+        powerAnimating = false;
+      }, CRT_ON_MS);
+    }
+  });
+
   /* ── Shared Escape key handler ───────────────────────────────── */
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (lbox?.classList.contains("visit-lbox-is-open"))    closeLbox();
     else if (infoLbox?.classList.contains("info-lbox-is-open")) closeInfoLbox();
+    else if (controlsLbox?.classList.contains("controls-lbox-is-open")) closeControlsLbox();
   });
 
   /* ── Visit lightbox page boxes ───────────────────────────────── */
